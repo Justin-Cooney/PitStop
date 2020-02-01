@@ -12,12 +12,18 @@ public class PlayerController : MonoBehaviour
     private Option<ICanBePickedUp> CarriedItem;
     public Option<GameObject> ReachableGameObject { get; private set; }
 
+    [Inject]
     private IObserver<AddPoints> _events;
     private CharacterController _characterController;
     private float _speed = 15;
     private float _rotationSpeed = 25;
     private Vector2 _velocity;
     private Vector2 _targetRotation;
+
+    private float _sprintSpeed = 30;
+    private float _sprintCooldown = 0;
+    private float _sprintDuration = 0.7f;
+    private bool _sprinting = false;
 
     [Inject]
     public void Initialize()
@@ -29,10 +35,13 @@ public class PlayerController : MonoBehaviour
     {
         _characterController.Move(GetVelocity());
         transform.rotation = GetRotation();
+        _sprintCooldown -= 1 * Time.deltaTime;
+        if (_sprintCooldown <= 0.5f)
+            _sprinting = false;
     }
 
     private Vector3 GetVelocity()
-        => new Vector3(_velocity.x, 0, _velocity.y) * _speed * Time.deltaTime;
+        => new Vector3(_velocity.x, 0, _velocity.y) * (_sprinting ? _sprintSpeed : _speed) * Time.deltaTime;
 
     private Quaternion GetRotation()
         => Quaternion.Lerp(
@@ -45,7 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         var direction = value.Get<Vector2>();
 
-        if (Math.Abs(direction.x) > 0.5 || Math.Abs(direction.y) > 0.5)
+        if (Math.Abs(direction.x) > 0.31 || Math.Abs(direction.y) > 0.31)
         {
             _targetRotation = direction;
         }
@@ -126,5 +135,14 @@ public class PlayerController : MonoBehaviour
     {
         itemToDrop.DropItem();
         CarriedItem = Option.None<ICanBePickedUp>();
+    }
+
+    public void OnSprint(InputValue value)
+    {
+        if (value.Get<float>() > 0 && _sprintCooldown <= 0)
+        {
+            _sprinting = true;
+            _sprintCooldown = _sprintDuration;
+        }
     }
 }

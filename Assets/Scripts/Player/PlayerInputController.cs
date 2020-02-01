@@ -25,5 +25,10 @@ namespace Assets.Scripts.Player
 		{
 			_playerController.OnMove(value);
 		}
+
+		public void OnSprint(InputValue value)
+		{
+			_playerController.OnSprint(value);
+		}
 	}
 }
