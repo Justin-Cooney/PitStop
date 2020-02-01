@@ -16,6 +16,7 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<IncrementDeathCount>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<LogEvent>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<AddPoints>>().AsSingle();
+      Container.BindInterfacesAndSelfTo<Subject<ShipEvent>>().AsSingle();
 		}
 	}
 }
