@@ -131,6 +131,10 @@ public class PlayerController : MonoBehaviour
                     CarriedItem = Option.Some(objectToPickUp);
                     objectToPickUp.PickUpItem(this);
                 }
+                else if(o.GetComponent<IDoorPanel>() is IDoorPanel doorPanel)
+                {
+                    doorPanel.ToggleDoor();
+                }
             }));
     }
 
