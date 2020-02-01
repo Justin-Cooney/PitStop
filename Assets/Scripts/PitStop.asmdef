@@ -5,12 +5,23 @@
         "UniRx",
         "Unity.InputSystem"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Functional.AsyncEnumerables.dll",
+        "Functional.Common.Extensions.dll",
+        "Functional.Enumerables.Extensions.dll",
+        "Functional.Primitives.AsyncEnumerables.dll",
+        "Functional.Primitives.dll",
+        "Functional.Primitives.Extensions.dll",
+        "Functional.Unions.AsyncEnumerables.dll",
+        "Functional.Unions.dll",
+        "Functional.Unions.Extensions.dll"
+    ],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
