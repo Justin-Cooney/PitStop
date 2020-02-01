@@ -52,9 +52,15 @@ namespace Assets.Scripts.Item
             this.part = null;
         }
 
-        public void UseItem () {
-            //this.part.PassItem(this.objectType);
+        public void UseItem ()
+        {
+            //remove item from player
+            DropItem();
+            //give item to the ship part
+            this.part.receiveItem(this.objectType);
             this.part = null;
+            //destroy self
+            GameObject.Destroy(this);
         }
 
     }

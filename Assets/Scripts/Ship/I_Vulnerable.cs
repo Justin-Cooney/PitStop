@@ -1,5 +1,6 @@
 ﻿public interface I_Vulnerable
 {
-    bool zeroIntegrityCausingDeath();
+ //well deathly hallow to you!
+    bool atDeathlyIntegrity();
 
 }

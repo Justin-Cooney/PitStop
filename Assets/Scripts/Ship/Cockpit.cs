@@ -1,12 +1,12 @@
 ﻿
 public class Cockpit : Part, I_Critical, I_Vulnerable
 {
-    public bool lessThanQuarterIntegrity()
+    public bool atCriticalIntegrity()
     {
         return this.integrity <= 0.25;
     }
 
-    public bool zeroIntegrityCausingDeath()
+    public bool atDeathlyIntegrity()
     {
         return this.integrity <= 0f;
     }

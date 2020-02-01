@@ -27,7 +27,7 @@ public class Engine : Part, I_Critical
         this.fuel += fuelAdded;
     }
 
-    public bool lessThanQuarterIntegrity()
+    public bool atCriticalIntegrity()
     {
         return this.integrity <= 0.25;
     }
