@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 	private Vector2 _velocity;
 	private Vector2 _targetRotation;
 
-	[Inject]
+    [Inject]
 	public void Initialize()
 	{
 		_characterController = this.GetComponent<CharacterController>();
@@ -50,4 +50,5 @@ public class PlayerController : MonoBehaviour
 		}
 		_events.OnNext(new Event(5));
 	}
+
 }

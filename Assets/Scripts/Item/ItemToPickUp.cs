@@ -9,6 +9,8 @@ namespace Assets.Scripts.Item
     {
         private readonly Rigidbody _RigidBody;
         private Option<PlayerController> _carryingPlayer = Option.None<PlayerController>();
+        public ObjectType objectType;
+        public Part part;
 
         public bool CanBePickedUp => !_carryingPlayer.HasValue();
         public bool IsPickedUp => _carryingPlayer.HasValue();
@@ -43,6 +45,14 @@ namespace Assets.Scripts.Item
                     transform.SetParent(null);
                 }
             );;
+        }
+
+        public void OnPlaceableAreaEnter(Part part) {
+            this.part = part;
+        }
+
+        public void OnPlaceableAreaExit(Part part) {
+            this.part = null;
         }
     }
 }

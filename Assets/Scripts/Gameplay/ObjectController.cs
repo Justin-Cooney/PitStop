@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+//To be attached onto the object that can be picked up/dropped/placed
 public class ObjectController : MonoBehaviour {
 
     public ObjectContainer container;
+    public ObjectProperty property;
     private Transform tform;
 
     // Start is called before the first frame update
@@ -14,7 +14,6 @@ public class ObjectController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        
     }
 
     public ObjectType GetObjectType() {
