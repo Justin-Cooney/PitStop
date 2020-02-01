@@ -18,7 +18,12 @@
         "Functional.Primitives.Extensions.dll",
         "Functional.Unions.AsyncEnumerables.dll",
         "Functional.Unions.dll",
-        "Functional.Unions.Extensions.dll"
+        "Functional.Unions.Extensions.dll",
+        "Zenject.ReflectionBaking.Mono.Cecil.dll",
+        "Zenject.ReflectionBaking.Mono.Cecil.Mdb.dll",
+        "Zenject.ReflectionBaking.Mono.Cecil.Pdb.dll",
+        "Zenject.ReflectionBaking.Mono.Cecil.Rocks.dll",
+        "Zenject-usage.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
