@@ -2,7 +2,8 @@
     "name": "PitStop",
     "references": [
         "Zenject",
-        "UniRx"
+        "UniRx",
+        "Unity.InputSystem"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

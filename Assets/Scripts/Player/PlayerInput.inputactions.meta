@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 4b1e827eae26bb040b3ad4e9417d87e2
+ScriptedImporter:
+  fileIDToRecycleName:
+    11400000: <root>
+    11400002: PlayerControls/MoveUp
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: e2fdc6edf8744b38b702a2a5ee3541b2, type: 3}
+  generateWrapperCode: 1
+  wrapperCodePath: Assets/Scripts/Player/PlayerInput.cs
+  wrapperClassName: PlayerInput
+  wrapperCodeNamespace: Assets.Scripts.Player
+  generateActionEvents: 1
+  generateInterfaces: 1
+  actionGuids: []
+  actionMapGuids: []
