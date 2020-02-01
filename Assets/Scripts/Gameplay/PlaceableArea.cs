@@ -9,19 +9,27 @@ public class PlaceableArea : MonoBehaviour {
     public Part part;
 
     private void OnTriggerEnter (Collider other) {
-        ItemToPickUp objController = other.GetComponent<ItemToPickUp> ();
-        if(objController != null) {
+        ItemToPickUp item = other.GetComponent<ItemToPickUp> ();
+        if(item != null) {
             foreach(ObjectType objType in acceptableObjectTypes) {
-                bool acceptable = objController.objectType == objType;
+                bool acceptable = item.objectType == objType;
                 if(acceptable) {
-
+                    item.OnPlaceableAreaEnter (part);
                 }
             }
         }
     }
 
     private void OnTriggerExit (Collider other) {
-
+        ItemToPickUp item = other.GetComponent<ItemToPickUp> ();
+        if (item != null) {
+            foreach (ObjectType objType in acceptableObjectTypes) {
+                bool acceptable = item.objectType == objType;
+                if (acceptable) {
+                    item.OnPlaceableAreaExit ();
+                }
+            }
+        }
     }
 
 }

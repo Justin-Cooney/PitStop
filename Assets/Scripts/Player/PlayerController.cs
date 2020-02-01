@@ -133,7 +133,11 @@ public class PlayerController : MonoBehaviour
 
     private void DropCarriedItem(ICanBePickedUp itemToDrop)
     {
-        itemToDrop.DropItem();
+        if(itemToDrop.CanBePlaced) {
+            Debug.Log ("yahoo");
+        } else {
+            itemToDrop.DropItem();
+        }
         CarriedItem = Option.None<ICanBePickedUp>();
     }
 
