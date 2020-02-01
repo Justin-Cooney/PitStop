@@ -8,7 +8,7 @@
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": true,
+    "overrideReferences": false,
     "precompiledReferences": [
         "Functional.AsyncEnumerables.dll",
         "Functional.Common.Extensions.dll",
