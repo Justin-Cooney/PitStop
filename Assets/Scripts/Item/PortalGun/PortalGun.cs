@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Item.PortalGun
 {
-    class PortalGun : MonoBehaviour, ICanBePickedUp
+    class PortalGun : MonoBehaviour
     {
         public bool IsPickedUp => throw new NotImplementedException();
 
