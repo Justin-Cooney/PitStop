@@ -39,10 +39,15 @@ public class PlayerController : MonoBehaviour
 	public void OnMove(InputValue value)
 	{
 		var direction = value.Get<Vector2>();
+
+		if (Math.Abs(direction.x) > 0.5 || Math.Abs(direction.y) > 0.5)
+		{
+			_targetRotation = direction;
+		}
+
 		if (Math.Abs(direction.x) > 0.1 || Math.Abs(direction.y) > 0.1)
 		{
 			_velocity = direction;
-			_targetRotation = direction;
 			_speed = 15;
 		}
 		else
