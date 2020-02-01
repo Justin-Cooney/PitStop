@@ -1,15 +1,16 @@
 ﻿using Assets.Scripts.Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Zenject;
-using static UnityEngine.Experimental.Input.InputAction;
+using static UnityEngine.InputSystem.InputAction;
+using PlayerInput = Assets.Scripts.Player.PlayerInput;
 
 public class Player : MonoBehaviour
 {
 	private PlayerInput _playerInput;
 	private CharacterController _characterController;
 	private float _speed = 5;
-
-	private bool _moveUp = false;
+	private Vector2 _velocity;
 
 	[Inject]
 	public void Initialize(PlayerInput playerInput)
@@ -17,34 +18,23 @@ public class Player : MonoBehaviour
 		_playerInput = playerInput;
 		_characterController = this.GetComponent<CharacterController>();
 		_playerInput.PlayerControls.Enable();
-		_playerInput.PlayerControls.MoveUp.performed += OnMoveUp;
-		_playerInput.PlayerControls.MoveDown.performed += OnMoveDown;
-		_playerInput.PlayerControls.MoveLeft.performed += OnMoveLeft;
-		_playerInput.PlayerControls.MoveRight.performed += OnMoveRight;
+
+		_playerInput.PlayerControls.Move.performed += OnMove;
+		_playerInput.PlayerControls.Move.canceled += OnMoveCancelled;
 	}
 
 	public void Update()
 	{
-		
+		_characterController.Move(new Vector3(_velocity.x, 0, _velocity.y) * _speed * Time.deltaTime);
 	}
 
-	private void OnMoveUp(CallbackContext context)
+	private void OnMove(CallbackContext context)
 	{
-		_characterController.Move(Vector3.forward * _speed * Time.deltaTime);
+		_velocity = context.ReadValue<Vector2>();
 	}
 
-	private void OnMoveDown(CallbackContext context)
+	private void OnMoveCancelled(CallbackContext context)
 	{
-		_characterController.Move(Vector3.back * _speed * Time.deltaTime);
-	}
-
-	private void OnMoveLeft(CallbackContext context)
-	{
-		_characterController.Move(Vector3.left * _speed * Time.deltaTime);
-	}
-
-	private void OnMoveRight(CallbackContext context)
-	{
-		_characterController.Move(Vector3.right * _speed * Time.deltaTime);
+		_velocity = Vector2.zero;
 	}
 }

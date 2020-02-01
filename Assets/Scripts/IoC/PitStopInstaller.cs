@@ -9,7 +9,7 @@ namespace Assets.Scripts.IoC
 
 		public override void InstallBindings()
 		{
-			Container.BindInterfacesAndSelfTo<PlayerInput>().FromInstance(input).AsSingle();
+			Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
 		}
 	}
 }
