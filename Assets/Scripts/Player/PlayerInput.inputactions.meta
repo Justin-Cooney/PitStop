@@ -4,6 +4,9 @@ ScriptedImporter:
   fileIDToRecycleName:
     11400000: <root>
     11400002: PlayerControls/MoveUp
+    11400004: PlayerControls/MoveDown
+    11400006: PlayerControls/MoveLeft
+    11400008: PlayerControls/MoveRight
   externalObjects: {}
   userData: 
   assetBundleName: 

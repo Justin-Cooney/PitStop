@@ -8,11 +8,41 @@
                 {
                     "name": "MoveUp",
                     "id": "34ff15c5-9468-4b96-935f-36ed16f3bf1e",
-                    "expectedControlLayout": "",
-                    "continuous": false,
+                    "expectedControlLayout": "Button",
+                    "continuous": true,
                     "passThrough": false,
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
+                    "bindings": []
+                },
+                {
+                    "name": "MoveDown",
+                    "id": "4ad376e0-6135-4f3b-b1da-357a6f46437c",
+                    "expectedControlLayout": "Button",
+                    "continuous": true,
+                    "passThrough": false,
+                    "processors": "",
+                    "interactions": "Hold",
+                    "bindings": []
+                },
+                {
+                    "name": "MoveLeft",
+                    "id": "f9ede16f-8755-4d6d-b3f5-23dfcb5a6fe6",
+                    "expectedControlLayout": "Button",
+                    "continuous": true,
+                    "passThrough": false,
+                    "processors": "",
+                    "interactions": "Hold",
+                    "bindings": []
+                },
+                {
+                    "name": "MoveRight",
+                    "id": "b9ccc981-584d-4bd0-9a75-70d42b48b668",
+                    "expectedControlLayout": "Button",
+                    "continuous": true,
+                    "passThrough": false,
+                    "processors": "",
+                    "interactions": "Hold",
                     "bindings": []
                 }
             ],
@@ -20,10 +50,46 @@
                 {
                     "name": "",
                     "path": "<Keyboard>/w",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "MoveUp",
+                    "chainWithPrevious": false,
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                },
+                {
+                    "name": "",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveDown",
+                    "chainWithPrevious": false,
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                },
+                {
+                    "name": "",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveLeft",
+                    "chainWithPrevious": false,
+                    "isComposite": false,
+                    "isPartOfComposite": false,
+                    "modifiers": ""
+                },
+                {
+                    "name": "",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveRight",
                     "chainWithPrevious": false,
                     "isComposite": false,
                     "isPartOfComposite": false,
