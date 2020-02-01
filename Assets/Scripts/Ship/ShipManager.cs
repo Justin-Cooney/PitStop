@@ -1,21 +1,22 @@
-﻿using UniRx;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using System;
-
+using UniRx;
 
 public class NewBehaviourScript : MonoBehaviour
 {
 
     [Inject]
-    private IObservable<ShipEvent> _events;
+    private IObservable<ShipPhaseEvent> _phaseEvents;
+    [Inject]
+    private IObservable<ShipCreatedEvent> _createEvents;
 
     //constants. TODO: test and find logical values
-    private static int FUEL_TIME_RATIO = 1;
-    private static int AMMO_TIME_RATIO = 1;
-    private static int AMMO_DAMAGE_RATTIO = 1;
+    public static int FUEL_TIME_RATIO = 1;
+    public static int AMMO_TIME_RATIO = 1;
+    public static int AMMO_DAMAGE_RATTIO = 1;
 
     private Dictionary<int, Ship> shipByID = new Dictionary<int, Ship>();
     private List<int> hangarQueue = new List<int>();
@@ -23,9 +24,10 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _events.Where(e => e.eType == ShipEvent.EType.DEATH).Subscribe(handleShipDeath);
-        _events.Where(e => e.eType == ShipEvent.EType.LEAVING_HANGAR).Subscribe(handleShipDeparture);
-        _events.Where(e => e.eType == ShipEvent.EType.EMERGENCY_LANDING).Subscribe(handleShipEmergency);
+        _phaseEvents.Where(e => e.eType == ShipPhaseEvent.EType.DEATH).Subscribe(handleShipDeath);
+        _phaseEvents.Where(e => e.eType == ShipPhaseEvent.EType.LEAVING_HANGAR).Subscribe(handleShipDeparture);
+        _phaseEvents.Where(e => e.eType == ShipPhaseEvent.EType.EMERGENCY_LANDING).Subscribe(handleShipEmergency);
+        _createEvents.Subscribe(handleShipCreation);
     }
 
     // Update is called once per frame
@@ -34,18 +36,23 @@ public class NewBehaviourScript : MonoBehaviour
 
     }
 
-    private void handleShipDeath(ShipEvent e)
+    private void handleShipDeath(ShipPhaseEvent e)
     {
 
     }
 
-    private void handleShipDeparture(ShipEvent e)
+    private void handleShipDeparture(ShipPhaseEvent e)
     {
 
     }
 
-    private void handleShipEmergency(ShipEvent e)
+    private void handleShipEmergency(ShipPhaseEvent e)
     {
 
+    }
+
+    private void handleShipCreation(ShipCreatedEvent e)
+    {
+        this.shipByID[e.ship.shipID] = e.ship;
     }
 }
