@@ -50,5 +50,6 @@ public class PlayerController : MonoBehaviour
 		{
 			_velocity = Vector2.zero;
 		}
+		_events.OnNext(new Event(5));
 	}
 }
