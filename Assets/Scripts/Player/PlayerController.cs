@@ -90,15 +90,6 @@ public class PlayerController : MonoBehaviour
       }
   }
 
-  private Vector3 GetVelocity()
-      => new Vector3(_velocity.x, 0, _velocity.y) * _speed * Time.deltaTime;
-
-  private Quaternion GetRotation()
-      => Quaternion.Lerp(
-          transform.rotation,
-          Quaternion.Euler(new Vector3(0, Mathf.Atan2(_targetRotation.x, _targetRotation.y) * 180 / Mathf.PI, 0)),
-          _rotationSpeed * Time.deltaTime);
-
   public void HandleActionButtonClick()
   {
 
