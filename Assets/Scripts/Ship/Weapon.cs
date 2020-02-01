@@ -9,7 +9,7 @@ public abstract class Weapon : Part
         base.receiveItem(item);
         if (item.resource == ObjectType.Resource.AMMO)
         {
-            addAmmo(0f);
+            addAmmo(item.value);
         }
     }
     public void useAmmo(float ammoUsage)

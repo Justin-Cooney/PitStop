@@ -7,6 +7,7 @@ namespace Assets.Scripts.Item.Interfaces
     {
         bool IsPickedUp { get; }
         bool CanBePickedUp { get; }
+        bool CanBePlaced { get; }
         void PickUpItem(PlayerController Player);
         void DropItem();
     }

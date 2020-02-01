@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu]
 public class ObjectType : ScriptableObject {
@@ -12,4 +10,6 @@ public class ObjectType : ScriptableObject {
 
     public Resource resource;
     
+    public float value;
+
 }

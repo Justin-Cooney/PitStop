@@ -7,15 +7,18 @@ namespace Assets.Scripts.Item
 {
     class ItemToPickUp : MonoBehaviour, ICanBePickedUp
     {
-        private readonly Rigidbody _RigidBody;
+        private Rigidbody _RigidBody;
         private Option<PlayerController> _carryingPlayer = Option.None<PlayerController>();
+        public ObjectType objectType;
+        private Part part;
 
         public bool CanBePickedUp => !_carryingPlayer.HasValue();
         public bool IsPickedUp => _carryingPlayer.HasValue();
 
-        public ItemToPickUp()
-        {
-            _RigidBody = GetComponent<Rigidbody>();
+        bool ICanBePickedUp.CanBePlaced => this.part != null;
+
+        void Start() {
+            _RigidBody = GetComponent<Rigidbody> ();
         }
 
         public void DropItem()
@@ -33,16 +36,26 @@ namespace Assets.Scripts.Item
             _carryingPlayer.Do(
                 p =>
                 {
-                    //_RigidBody.velocity = Vector3.zero;
-                    //_RigidBody.angularVelocity = Vector3.zero;
-                    //transform.SetParent(p.transform);
                     transform.position = p.transform.position;
                 },
                 () =>
                 {
-                    transform.SetParent(null);
                 }
             );;
         }
+
+        public void OnPlaceableAreaEnter(Part part) {
+            this.part = part;
+        }
+
+        public void OnPlaceableAreaExit() {
+            this.part = null;
+        }
+
+        public void UseItem () {
+            //this.part.PassItem(this.objectType);
+            this.part = null;
+        }
+
     }
 }

@@ -27,7 +27,7 @@ public class Part : MonoBehaviour
     {
         if (item.resource == ObjectType.Resource.INTEGRITY)
         {
-            repairDamage(0f);
+            repairDamage(item.value);
         }
     }
 

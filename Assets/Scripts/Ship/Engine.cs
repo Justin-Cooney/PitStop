@@ -9,7 +9,7 @@ public class Engine : Part, I_Critical
         base.receiveItem(item);
         if (item.resource == ObjectType.Resource.FUEL)
         {
-            addFuel(0f);
+            addFuel(item.value);
         }
     }
     public void useFuel(float fuelUsage)
