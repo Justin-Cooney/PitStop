@@ -13,9 +13,13 @@ namespace Assets.Scripts.IoC
 		{
 			Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<Event>>().AsSingle();
+<<<<<<< HEAD
 			Container.BindInterfacesAndSelfTo<Subject<IncrementDeathCount>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<LogEvent>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<AddPoints>>().AsSingle();
+=======
+			Container.BindInterfacesAndSelfTo<Subject<ShipEvent>>().AsSingle();
+>>>>>>> 20c7e2e871289144140d4fde951cba41c747b9e6
 		}
 	}
 }
