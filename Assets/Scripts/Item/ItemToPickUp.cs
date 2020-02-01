@@ -18,12 +18,12 @@ namespace Assets.Scripts.Item
             _RigidBody = GetComponent<Rigidbody>();
         }
 
-        public void OnDrop()
+        public void DropItem()
         {
             _carryingPlayer = Option.None<PlayerController>();
         }
 
-        public void OnPickUp(PlayerController player)
+        public void PickUpItem(PlayerController player)
         {
             _carryingPlayer = Option.Some(player);
         }

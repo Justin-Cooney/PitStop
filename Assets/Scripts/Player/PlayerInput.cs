@@ -27,6 +27,14 @@ namespace Assets.Scripts.Player
                     ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Action Button"",
+                    ""type"": ""Button"",
+                    ""id"": ""a450e557-76fc-479a-b049-522b46ae8641"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -95,6 +103,28 @@ namespace Assets.Scripts.Player
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2df44631-f94d-499b-ac91-766b728e61ed"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action Button"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d98ec70a-59d7-41da-b51c-563163c4a4a6"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action Button"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -104,6 +134,7 @@ namespace Assets.Scripts.Player
             // PlayerControls
             m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
             m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
+            m_PlayerControls_ActionButton = m_PlayerControls.FindAction("Action Button", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -154,11 +185,13 @@ namespace Assets.Scripts.Player
         private readonly InputActionMap m_PlayerControls;
         private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
         private readonly InputAction m_PlayerControls_Move;
+        private readonly InputAction m_PlayerControls_ActionButton;
         public struct PlayerControlsActions
         {
             private @PlayerInput m_Wrapper;
             public PlayerControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
+            public InputAction @ActionButton => m_Wrapper.m_PlayerControls_ActionButton;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -171,6 +204,9 @@ namespace Assets.Scripts.Player
                     @Move.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMove;
                     @Move.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMove;
                     @Move.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMove;
+                    @ActionButton.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
+                    @ActionButton.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
+                    @ActionButton.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
                 }
                 m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -178,6 +214,9 @@ namespace Assets.Scripts.Player
                     @Move.started += instance.OnMove;
                     @Move.performed += instance.OnMove;
                     @Move.canceled += instance.OnMove;
+                    @ActionButton.started += instance.OnActionButton;
+                    @ActionButton.performed += instance.OnActionButton;
+                    @ActionButton.canceled += instance.OnActionButton;
                 }
             }
         }
@@ -185,6 +224,7 @@ namespace Assets.Scripts.Player
         public interface IPlayerControlsActions
         {
             void OnMove(InputAction.CallbackContext context);
+            void OnActionButton(InputAction.CallbackContext context);
         }
     }
 }
