@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using Zenject;
 
 public enum ShipPhase
 {
@@ -12,16 +11,45 @@ public enum ShipPhase
 public class Ship : MonoBehaviour
 {
 
+    //CONSTANTS
+    private float HANGAR_MIN_TIME = 5f;
+    private float HANGAR_MAX_TIME = 20f;
+
+    [Inject]
+    private IObserver<ShipCreatedEvent> _creationBus;
+
     private float currentPhaseLength;
     private float phaseCountdown;
     private ShipPhase phase = ShipPhase.HANGAR;
+    public int shipID;
+    private bool inHangar = false;
+
+    private static int NEXT_SHIP_ID = 1;
+    private static int COUNT = 0;
 
     private List<Part> parts = new List<Part>();
+    [Inject]
+    public void Initialize()
+    {
+        this.shipID = Ship.NEXT_SHIP_ID;
+        //tell manager we exist
+        _creationBus.OnNext(new ShipCreatedEvent(this));
+        //put 1st ship in hangar (with very short timer). the rest are already fighting
+        if (Ship.COUNT == 1)        {
+            this.phase = ShipPhase.HANGAR;
+            leaveHangar();
+        }
+        else
+        {
+
+        }
+        Ship.NEXT_SHIP_ID++;
+        Ship.COUNT++;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -49,8 +77,30 @@ public class Ship : MonoBehaviour
                 break;
             case ShipPhase.HANGAR:
                 //GET BACK OUT AND FIGHT (enter FIGHT phase)
+                leaveHangar();
                 break;
         }
+    }
+
+    private float getHangarTime()
+    {
+        return UnityEngine.Random.Range(HANGAR_MIN_TIME, HANGAR_MAX_TIME);
+    }
+
+    private void enterHangar()
+    {
+        enterHangar(this.getHangarTime());
+    }
+
+    private void enterHangar(float repairTime)
+    {
+
+    }
+
+
+    private void leaveHangar()
+    {
+
     }
 }
 
