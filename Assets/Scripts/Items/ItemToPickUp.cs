@@ -3,7 +3,7 @@ using Functional;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Item.PortalGun
+namespace Assets.Scripts.Items
 {
     class ItemToPickUp : MonoBehaviour, ICanBePickedUp
     {
