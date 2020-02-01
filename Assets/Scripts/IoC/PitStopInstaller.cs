@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Player;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Player;
 using UniRx;
 using Zenject;
 
@@ -14,6 +15,9 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<Event>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<ShipPhaseEvent>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<ShipCreatedEvent>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<IncrementDeathCount>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<LogEvent>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<AddPoints>>().AsSingle();
 		}
 	}
 }
