@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Player;
+using UniRx;
 using Zenject;
 
 namespace Assets.Scripts.IoC
@@ -10,6 +11,7 @@ namespace Assets.Scripts.IoC
 		public override void InstallBindings()
 		{
 			Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<Event>>().AsSingle();
 		}
 	}
 }

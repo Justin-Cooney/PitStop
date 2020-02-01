@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Event : MonoBehaviour
+public class Event
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public Event(int someProp)
+	{
+		SomeProp = someProp;
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public int SomeProp { get; }
 }

@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Player;
+using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -7,9 +9,11 @@ using PlayerInput = Assets.Scripts.Player.PlayerInput;
 
 public class Player : MonoBehaviour
 {
+	[Inject]
+	private IObserver<Event> _events;
 	private PlayerInput _playerInput;
 	private CharacterController _characterController;
-	private float _speed = 5;
+	private float _speed = 15;
 	private Vector2 _velocity;
 
 	[Inject]
@@ -36,5 +40,6 @@ public class Player : MonoBehaviour
 	private void OnMoveCancelled(CallbackContext context)
 	{
 		_velocity = Vector2.zero;
+		_events.OnNext(new Event(5));
 	}
 }
