@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Events;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -6,7 +7,7 @@ using Zenject;
 public class PlayerController : MonoBehaviour
 {
 	[Inject]
-	private IObserver<Event> _events;
+	private IObserver<AddPoints> _events;
 	private CharacterController _characterController;
 	private float _speed = 15;
 	private float _rotationSpeed = 25;
@@ -48,6 +49,6 @@ public class PlayerController : MonoBehaviour
 		{
 			_velocity = Vector2.zero;
 		}
-		_events.OnNext(new Event(5));
+		_events.OnNext(new AddPoints(1));
 	}
 }
