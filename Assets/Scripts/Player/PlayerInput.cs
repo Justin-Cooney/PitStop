@@ -29,9 +29,17 @@ namespace Assets.Scripts.Player
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Action Button"",
+                    ""name"": ""ActionButton"",
                     ""type"": ""Button"",
                     ""id"": ""a450e557-76fc-479a-b049-522b46ae8641"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""f6e1002a-236c-4aa1-8bbf-f5d10da040df"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -111,7 +119,7 @@ namespace Assets.Scripts.Player
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Action Button"",
+                    ""action"": ""ActionButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -122,7 +130,29 @@ namespace Assets.Scripts.Player
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Action Button"",
+                    ""action"": ""ActionButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7926a510-e57f-4d54-8cc5-b4b3ec035bcf"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b365d9f1-6dde-4ecf-875e-e67b4636ffc7"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -134,7 +164,8 @@ namespace Assets.Scripts.Player
             // PlayerControls
             m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
             m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
-            m_PlayerControls_ActionButton = m_PlayerControls.FindAction("Action Button", throwIfNotFound: true);
+            m_PlayerControls_ActionButton = m_PlayerControls.FindAction("ActionButton", throwIfNotFound: true);
+            m_PlayerControls_Sprint = m_PlayerControls.FindAction("Sprint", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -186,12 +217,14 @@ namespace Assets.Scripts.Player
         private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
         private readonly InputAction m_PlayerControls_Move;
         private readonly InputAction m_PlayerControls_ActionButton;
+        private readonly InputAction m_PlayerControls_Sprint;
         public struct PlayerControlsActions
         {
             private @PlayerInput m_Wrapper;
             public PlayerControlsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
             public InputAction @ActionButton => m_Wrapper.m_PlayerControls_ActionButton;
+            public InputAction @Sprint => m_Wrapper.m_PlayerControls_Sprint;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -207,6 +240,9 @@ namespace Assets.Scripts.Player
                     @ActionButton.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
                     @ActionButton.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
                     @ActionButton.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActionButton;
+                    @Sprint.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSprint;
+                    @Sprint.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSprint;
+                    @Sprint.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSprint;
                 }
                 m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -217,6 +253,9 @@ namespace Assets.Scripts.Player
                     @ActionButton.started += instance.OnActionButton;
                     @ActionButton.performed += instance.OnActionButton;
                     @ActionButton.canceled += instance.OnActionButton;
+                    @Sprint.started += instance.OnSprint;
+                    @Sprint.performed += instance.OnSprint;
+                    @Sprint.canceled += instance.OnSprint;
                 }
             }
         }
@@ -225,6 +264,7 @@ namespace Assets.Scripts.Player
         {
             void OnMove(InputAction.CallbackContext context);
             void OnActionButton(InputAction.CallbackContext context);
+            void OnSprint(InputAction.CallbackContext context);
         }
     }
 }

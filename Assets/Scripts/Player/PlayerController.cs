@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Option<ICanBePickedUp> CarriedItem;
     public Option<GameObject> ReachableGameObject { get; private set; }
 
+    [Inject]
     private IObserver<AddPoints> _events;
     private CharacterController _characterController;
     private float _speed = 15;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using System;
-
+using UniRx;
 
 public class NewBehaviourScript : MonoBehaviour
 {
