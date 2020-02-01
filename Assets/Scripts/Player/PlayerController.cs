@@ -13,8 +13,6 @@ public class PlayerController : MonoBehaviour
 	private Vector2 _velocity;
 	private Vector2 _targetRotation;
 
-	public int DeviceId;
-
 	[Inject]
 	public void Initialize()
 	{
