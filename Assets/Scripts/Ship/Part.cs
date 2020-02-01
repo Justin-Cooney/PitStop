@@ -5,16 +5,30 @@ using UnityEngine;
 public class Part : MonoBehaviour
 {
 
+    protected float integrity = 1f;
+    public bool onFire = false;
 
-    // Start is called before the first frame update
-    void Start()
+    public void dealDamage(float rawDamage)
     {
-        
+        this.integrity -= rawDamage;
     }
 
-    // Update is called once per frame
-    void Update()
+    public float getIntegrity()
     {
-        
+        return this.integrity;
     }
+
+    protected void repairDamage(float rawRepair)
+    {
+        this.integrity += rawRepair;
+    }
+
+    public void receiveItem(ObjectType item)
+    {
+        if (item.resource == ObjectType.Resource.INTEGRITY)
+        {
+            repairDamage(0f);
+        }
+    }
+
 }
