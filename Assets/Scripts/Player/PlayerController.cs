@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
+using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Inject]
     private IObserver<AddPoints> _events;
+
     private CharacterController _characterController;
     private float _speed = 15;
     private float _rotationSpeed = 25;
@@ -101,7 +103,6 @@ public class PlayerController : MonoBehaviour
 
     public void HandleActionButtonClick()
     {
-
         CheckIfRayCastHit();
         DropOrPickupItem();
     }

@@ -3,7 +3,7 @@ using Functional;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Item
+namespace Assets.Scripts.Item.PortalGun
 {
     class ItemToPickUp : MonoBehaviour, ICanBePickedUp
     {
@@ -36,12 +36,13 @@ namespace Assets.Scripts.Item
             _carryingPlayer.Do(
                 p =>
                 {
-                    transform.position = p.transform.position;
+                    transform.position = p.transform.position + (p.transform.forward * 1.1f);
+                    transform.rotation = p.transform.rotation;
                 },
                 () =>
                 {
                 }
-            );;
+            );
         }
 
         public void OnPlaceableAreaEnter(Part part) {
