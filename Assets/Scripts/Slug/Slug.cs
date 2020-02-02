@@ -109,7 +109,7 @@ public class Slug : MonoBehaviour
     public GameObject Nuke;
     private void RollForLoot()
     {
-        var powerUp = UnityEngine.Random.Range(0, 5);
+        var powerUp = UnityEngine.Random.Range(0, 80);
         if (powerUp == 0)
         {
             var nuke = nukeFactory.Create();
