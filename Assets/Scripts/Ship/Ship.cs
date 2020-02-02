@@ -135,7 +135,6 @@ public class Ship : MonoBehaviour
 
     private void enterHangar(float repairTime)
     {
-        this.currentPhaseLength = repairTime;
         setPhaseDuration(repairTime);
     }
 
