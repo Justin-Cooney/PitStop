@@ -2,7 +2,7 @@
 public abstract class Weapon : Part
 {
 
-    protected float ammo;
+    protected float ammo = 1f;
 
     new public void receiveItem(ObjectType item)
     {

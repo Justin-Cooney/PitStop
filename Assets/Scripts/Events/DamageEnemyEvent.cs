@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageEnemyEvent : MonoBehaviour
+public class DamageEnemyEvent
 {
 	public DamageEnemyEvent(float damageDealt)
 	{

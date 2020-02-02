@@ -2,7 +2,7 @@
 public class Engine : Part, I_Critical
 {
 
-    protected float fuel;
+    protected float fuel = 1f;
 
     new public void receiveItem(ObjectType item)
     {
