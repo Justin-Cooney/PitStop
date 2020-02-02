@@ -201,7 +201,6 @@ public class PlayerController : MonoBehaviour
 
     public void HandleActionButtonClick()
     {
-        CheckIfRayCastHit();
         DropOrPickupItem();
     }
 
@@ -209,18 +208,24 @@ public class PlayerController : MonoBehaviour
     {
         CarriedItem.Do(
             i => DropCarriedItem(i),
-            () => ReachableGameObject.Do(o =>
+            () =>
             {
-                if (o.GetComponent<ICanBePickedUp>() is ICanBePickedUp objectToPickUp)
+                CheckIfRayCastHit();
+                ReachableGameObject.Do(o =>
                 {
-                    CarriedItem = Option.Some(objectToPickUp);
-                    objectToPickUp.PickUpItem(this);
-                }
-                else if(o.GetComponent<IDoorPanel>() is IDoorPanel doorPanel)
-                {
-                    doorPanel.ToggleDoor();
-                }
-            }));
+                    if (o.GetComponent<ICanBePickedUp>() is ICanBePickedUp objectToPickUp)
+                    {
+                        CarriedItem = Option.Some(objectToPickUp);
+                        objectToPickUp.PickUpItem(this);
+                        ReachableGameObject = Option.None<GameObject>();
+                    }
+                    else if (o.GetComponent<IDoorPanel>() is IDoorPanel doorPanel)
+                    {
+                        doorPanel.ToggleDoor();
+                        ReachableGameObject = Option.None<GameObject>();
+                    }
+                });
+            });
     }
 
     private void OnTriggerEnter(Collider other)
@@ -271,7 +276,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        ReachableGameObject = Option.None<GameObject>();
+        ReachableGameObject.Do(r =>
+        {
+            if (other.gameObject == r)
+                ReachableGameObject = Option.None<GameObject>();
+        });
+        
+
     }
 
     private void DropCarriedItem(ICanBePickedUp itemToDrop)
