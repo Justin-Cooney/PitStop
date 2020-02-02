@@ -15,7 +15,7 @@ namespace Assets.Scripts.IoC
 		{
 			Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<Event>>().AsSingle();
-			Container.BindInterfacesAndSelfTo<Subject<ShipePhaseEvent>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<ShipPhaseEvent>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<ShipCreatedEvent>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<DamageEnemyEvent>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<IncrementDeathCount>>().AsSingle();
