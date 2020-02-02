@@ -14,6 +14,12 @@ public class MainMenuController : MonoBehaviour
         //_button.
     }
 
+    void Start()
+    {
+       var firstButton = GameObject.Find("Play_button").GetComponent<Button>();
+        firstButton.Select();
+        firstButton.OnSelect(null);
+    }
     public void OnPlay()
     {
         SceneManager.LoadScene("GamePlayFinal", LoadSceneMode.Single);
