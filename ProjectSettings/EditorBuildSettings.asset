@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Swarm.unity
     guid: 79dd227e20c47194f89753c64d6307f9
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 3aa8b9593b7a6614cbf7697b190e9da4
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: bfd36535688301e41af7510dcb0c5027,
       type: 2}
