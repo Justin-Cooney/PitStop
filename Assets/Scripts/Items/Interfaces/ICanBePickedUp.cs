@@ -10,5 +10,6 @@ namespace Assets.Scripts.Item.Interfaces
         bool CanBePlaced { get; }
         void PickUpItem(PlayerController Player);
         void DropItem();
+        void UseItem ();
     }
 }
