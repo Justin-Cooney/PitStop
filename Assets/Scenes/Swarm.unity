@@ -223,9 +223,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 45599337}
-  - component: {fileID: 45599339}
   m_Layer: 0
-  m_Name: SlugWaveSpawner
+  m_Name: SlugSpawnPoint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,28 +238,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 45599336}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.49, y: 0, z: 7.92}
+  m_LocalPosition: {x: -6.42, y: 0, z: 5.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 952361413}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &45599339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45599336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8cde815fcb4369408fec6249fe9d050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Slug: {fileID: 7360595716781961885, guid: dfea44ce9799f764fbdc40ae7f9bab30, type: 3}
-  SpawnEffects: {fileID: 6658713496194389409, guid: ed40a0100bc29304c99e997fb37ce8eb,
-    type: 3}
-  _timeToSpawn: 10
 --- !u!1 &74707025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,9 +1573,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 453515091}
-  - component: {fileID: 453515092}
   m_Layer: 0
-  m_Name: SlugWaveSpawner (1)
+  m_Name: SlugSpawnPoint2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1606,28 +1588,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453515090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.62, y: 0, z: 7.92}
+  m_LocalPosition: {x: 31.36, y: 0, z: 5.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 952361413}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &453515092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 453515090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8cde815fcb4369408fec6249fe9d050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Slug: {fileID: 7360595716781961885, guid: dfea44ce9799f764fbdc40ae7f9bab30, type: 3}
-  SpawnEffects: {fileID: 6658713496194389409, guid: ed40a0100bc29304c99e997fb37ce8eb,
-    type: 3}
-  _timeToSpawn: 10
 --- !u!1 &459049141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2933,6 +2899,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816394921}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &817704179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 817704180}
+  - component: {fileID: 817704181}
+  m_Layer: 0
+  m_Name: SlugWaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &817704180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817704179}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 952361413}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &817704181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817704179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8cde815fcb4369408fec6249fe9d050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Slug: {fileID: 7360595716781961885, guid: dfea44ce9799f764fbdc40ae7f9bab30, type: 3}
+  SpawnEffects: {fileID: 6658713496194389409, guid: ed40a0100bc29304c99e997fb37ce8eb,
+    type: 3}
+  _timeToSpawn: 0
+  _slugCount: 0
+  _spawnPoints:
+  - {fileID: 45599337}
+  - {fileID: 453515091}
+  - {fileID: 1237323837}
+  - {fileID: 1447170898}
 --- !u!1 &820614518
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,6 +3515,7 @@ Transform:
   - {fileID: 453515091}
   - {fileID: 1237323837}
   - {fileID: 1447170898}
+  - {fileID: 817704180}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4115,9 +4135,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1237323837}
-  - component: {fileID: 1237323838}
   m_Layer: 0
-  m_Name: SlugWaveSpawner (2)
+  m_Name: SlugSpawnPoint3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4131,28 +4150,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1237323836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.35, y: 0, z: -19.68}
+  m_LocalPosition: {x: 31.99, y: 0, z: -17.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 952361413}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1237323838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237323836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8cde815fcb4369408fec6249fe9d050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Slug: {fileID: 7360595716781961885, guid: dfea44ce9799f764fbdc40ae7f9bab30, type: 3}
-  SpawnEffects: {fileID: 6658713496194389409, guid: ed40a0100bc29304c99e997fb37ce8eb,
-    type: 3}
-  _timeToSpawn: 10
 --- !u!1 &1260757324
 GameObject:
   m_ObjectHideFlags: 0
@@ -4492,6 +4495,7 @@ GameObject:
   - component: {fileID: 1394543062}
   - component: {fileID: 1394543061}
   - component: {fileID: 1394543060}
+  - component: {fileID: 1394543063}
   m_Layer: 0
   m_Name: SlugKillCount
   m_TagString: Untagged
@@ -4586,6 +4590,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1394543063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394543058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfdb6aca5321e1a45b8fe0c1cfccc888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  minIntensity: 0
+  maxIntensity: 1
+  smoothing: 41
 --- !u!1 &1429698009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1420827811599730, guid: aaad727b67e004b408be5595d3d8a829,
@@ -4771,9 +4791,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1447170898}
-  - component: {fileID: 1447170899}
   m_Layer: 0
-  m_Name: SlugWaveSpawner (3)
+  m_Name: SlugSpawnPoint4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4787,28 +4806,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447170897}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.62, y: 0, z: -18.8}
+  m_LocalPosition: {x: -5.93, y: 0, z: -17.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 952361413}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1447170899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447170897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8cde815fcb4369408fec6249fe9d050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Slug: {fileID: 7360595716781961885, guid: dfea44ce9799f764fbdc40ae7f9bab30, type: 3}
-  SpawnEffects: {fileID: 6658713496194389409, guid: ed40a0100bc29304c99e997fb37ce8eb,
-    type: 3}
-  _timeToSpawn: 10
 --- !u!1001 &1452361621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4917,6 +4920,7 @@ GameObject:
   - component: {fileID: 1464182875}
   - component: {fileID: 1464182874}
   - component: {fileID: 1464182877}
+  - component: {fileID: 1464182878}
   m_Layer: 0
   m_Name: WaveScreen
   m_TagString: Untagged
@@ -5110,6 +5114,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1464182878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464182872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfdb6aca5321e1a45b8fe0c1cfccc888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  minIntensity: 0
+  maxIntensity: 1
+  smoothing: 35
 --- !u!1001 &1497089838
 PrefabInstance:
   m_ObjectHideFlags: 0
