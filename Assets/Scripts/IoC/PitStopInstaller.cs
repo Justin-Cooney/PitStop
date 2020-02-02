@@ -26,6 +26,7 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<OxygenCritical>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<ShakeCamera>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<SlugKilled>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<SlugSpawned>>().AsSingle();
 			Container.BindFactory<Slug, Slug.SlugFactory>().FromComponentInNewPrefab(slug);
 
 		}

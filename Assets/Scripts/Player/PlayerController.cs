@@ -175,6 +175,16 @@ public class PlayerController : MonoBehaviour
             _stunned = 0.5f;
             DropOrPickupItem();
         }
+        else if (other.GetComponent<Slug>() != null)
+        {
+            _stunned = 0.5f;
+            DropOrPickupItem();
+        }
+        else if (other.GetComponent<Bullet>() != null)
+        {
+            _stunned = 0.5f;
+            DropOrPickupItem();
+        }
         else
         {
             var gameObject = other.gameObject;

@@ -34,7 +34,7 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
         _carryingPlayer = Option.Some(player);
         transform.SetParent(player.transform);
         transform.rotation = player.transform.rotation;
-        transform.localPosition = Vector3.zero + new Vector3(0, 0, 1.1f);
+        transform.localPosition = Vector3.forward * 1.1f;
     }
 
     void Update()
@@ -67,7 +67,8 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
     public void ItemAction(PlayerController player)
     {
         Debug.Log("PEWPEW");
-        GameObject.Instantiate(Bullet, transform.position, player.gameObject.transform.rotation);
+        var position = transform.position + (transform.forward * 0.5f);
+        GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
     }
 
 }
