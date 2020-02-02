@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
         {
             _velocity = Vector2.zero;
         }
-        //_events.OnNext(new AddPoints(1));
+        _events.OnNext(new AddPoints(1));
     }
 
     private readonly Quaternion _thirtyFiveDegreesLeft = Quaternion.Euler(0, -35, 0);
