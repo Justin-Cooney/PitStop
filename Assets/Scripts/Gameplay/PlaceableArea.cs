@@ -8,8 +8,9 @@ public class PlaceableArea : MonoBehaviour {
     public List<ObjectType> acceptableObjectTypes;
     public Part part;
 
-    private void OnTriggerEnter (Collider other) {
+    void OnTriggerEnter (Collider other) {
         ItemToPickUp item = other.GetComponent<ItemToPickUp> ();
+        Debug.Log ("ENTER");
         if(item != null) {
             foreach(ObjectType objType in acceptableObjectTypes) {
                 bool acceptable = item.objectType == objType;
@@ -20,8 +21,9 @@ public class PlaceableArea : MonoBehaviour {
         }
     }
 
-    private void OnTriggerExit (Collider other) {
+    void OnTriggerExit (Collider other) {
         ItemToPickUp item = other.GetComponent<ItemToPickUp> ();
+        Debug.Log ("EXIT");
         if (item != null) {
             foreach (ObjectType objType in acceptableObjectTypes) {
                 bool acceptable = item.objectType == objType;

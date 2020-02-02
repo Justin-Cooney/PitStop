@@ -114,6 +114,7 @@ public class Ship : MonoBehaviour
     private void enterHangar(float repairTime)
     {
         this.currentPhaseLength = repairTime;
+        this.phaseCountdown = repairTime;
     }
 
 
@@ -123,6 +124,7 @@ public class Ship : MonoBehaviour
 
         //TODO: remove this shitty and fake code
         this.currentPhaseLength = 15f;
+        this.phaseCountdown = 15f;
         this.randomizeShipCondition();
     }
 
