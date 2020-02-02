@@ -83,6 +83,14 @@ public class PlayerController : MonoBehaviour
         _initialized = true;
     }
 
+    private void LateUpdate () {
+        if (transform.position.y > 1f) {
+            _characterController.enabled = false;
+            transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
+            _characterController.enabled = true;
+        }
+    }
+
     public void Update()
     {
         _invincibility -= 1 * Time.deltaTime;
@@ -116,9 +124,6 @@ public class PlayerController : MonoBehaviour
             {
                 Respawn();
             }
-        }
-        if (transform.localPosition.y < -13f) {
-            transform.localPosition = new Vector3 (transform.localPosition.x, -13f, transform.localPosition.z);
         }
     }
 
@@ -273,6 +278,7 @@ public class PlayerController : MonoBehaviour
         } else {
             itemToDrop.DropItem();
         }
+        _velocity = Vector2.zero;
         CarriedItem = Option.None<ICanBePickedUp>();
     }
 
