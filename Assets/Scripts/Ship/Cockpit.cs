@@ -6,6 +6,11 @@ public class Cockpit : Part, I_Critical, I_Vulnerable
         return this.integrity <= 0.25;
     }
 
+    public void Start()
+    {
+        ShowIntegrityLevelIdicator();
+    }
+
     public bool atDeathlyIntegrity()
     {
         return this.integrity <= 0f;

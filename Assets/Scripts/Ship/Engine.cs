@@ -12,6 +12,11 @@ public class Engine : Part, I_Critical
             addFuel(item.value);
         }
     }
+    public void Start()
+    {
+        ShowIntegrityLevelIdicator();
+    }
+
     public void useFuel(float fuelUsage)
     {
         this.fuel -= fuelUsage;

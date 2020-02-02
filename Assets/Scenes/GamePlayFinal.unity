@@ -2451,7 +2451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoorId: 1
-  _isOpen: 0
+  _isOpen: 1
 --- !u!82 &635219996
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6815,6 +6815,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2db50ef769b58654b99c88ce897da598, type: 3}
+--- !u!1 &2080699067 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7982438744068859912, guid: ca77e70c1fcaa2a41a14fb96f9fd08eb,
+    type: 3}
+  m_PrefabInstance: {fileID: 7982438744404712115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2080699071
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080699067}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2095051051
 GameObject:
   m_ObjectHideFlags: 0

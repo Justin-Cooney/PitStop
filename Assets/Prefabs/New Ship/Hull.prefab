@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &46101562163100026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 969477114398681904}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: -3999285016706804051}
+  m_Layer: 0
+  m_Name: WaveFire (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &-3999285016706804051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 969477114398681904}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46101562163100026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2527091160911917284}
+  m_Father: {fileID: 5327365886454046210}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2220994923240232796
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +244,7 @@ Transform:
   - {fileID: 8164469682556656408}
   - {fileID: 112738124501745268}
   - {fileID: 4909941669220688027}
-  - {fileID: 2527091160911917284}
+  - {fileID: -3999285016706804051}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -230,6 +261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onFire: 0
+  IntegrityProcentageIndicator: {fileID: 2413785778075875596, guid: 0d4eccd989a64054585470a7389a9dfb,
+    type: 3}
 --- !u!1 &4724981374965623654
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,6 +323,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6546923916990955624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 969477114398681904}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2527091160911917284}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2527091160911917284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 3343445849290415060, guid: 229a7966e7ea91643a0965a02c9df889,
+    type: 3}
+  m_PrefabInstance: {fileID: 969477114398681904}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546923916990955624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: -3999285016706804051}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &963902280092490234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -464,9 +528,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 229a7966e7ea91643a0965a02c9df889, type: 3}
---- !u!4 &2527091160911917284 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3343445849290415060, guid: 229a7966e7ea91643a0965a02c9df889,
-    type: 3}
-  m_PrefabInstance: {fileID: 969477114398681904}
-  m_PrefabAsset: {fileID: 0}

@@ -4,6 +4,11 @@ public class MissileMount : Weapon, I_Explosive
 
     private Fire fire;
 
+    public void Start()
+    {
+        ShowIntegrityLevelIdicator();
+    }
+
     public float damageDoneIfDestroyed()
     {
         return 0.05f;

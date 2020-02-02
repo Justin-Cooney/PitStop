@@ -12,6 +12,12 @@ public abstract class Weapon : Part
             addAmmo(item.value);
         }
     }
+
+    private void Start()
+    {
+        ShowIntegrityLevelIdicator();
+    }
+
     public float useAmmoAndCalculateDamage(float ammoUsage)
     {
         this.ammo -= ammoUsage;

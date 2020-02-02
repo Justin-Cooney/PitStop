@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onFire: 0
+  IntegrityProcentageIndicator: {fileID: 2413785778075875596, guid: 0d4eccd989a64054585470a7389a9dfb,
+    type: 3}
 --- !u!1 &8560778629579640126
 GameObject:
   m_ObjectHideFlags: 0
