@@ -1,13 +1,14 @@
 ﻿
 public class GatGun : Weapon
 {
-    protected override float getAmmoUsagePerSecond()
+    public override float getAmmoUsagePerSecond()
     {
         return 0.01f;
     }
 
-    protected override float getDamagePerAmmo()
+    protected override float calculateDamage(float ammoUsage)
     {
-        return 5f;
+        //as the gun is damaged it's "accuracy goes down" (it's DPM decreases)
+        return ammoUsage * 5f * this.integrity;
     }
 }

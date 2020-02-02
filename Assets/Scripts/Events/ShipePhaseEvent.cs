@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ShipPhaseEvent
+public class ShipePhaseEvent
 {
-	public ShipPhaseEvent(int shipID, EType eType)
+	public ShipePhaseEvent(int shipID, EType eType)
 	{
 		this.shipID = shipID;
 		this.eType = eType;

@@ -12,14 +12,28 @@ public class Ship : MonoBehaviour
 {
 
     //CONSTANTS
-    private float HANGAR_MIN_TIME = 5f;
-    private float HANGAR_MAX_TIME = 20f;
+    private static float HANGAR_MIN_TIME = 5f;
+    private static float HANGAR_MAX_TIME = 20f;
+    public static float FUEL_TIME_RATIO = 0.01f;
+    public static float EVASION_FUEL_COST = 0.1f;
+    public static float AMMO_TIME_RATIO = 1;
+    public static float AMMO_DAMAGE_RATTIO = 1;
+    public static float ENEMY_ATTACK_RATE = 0.5f;
+    public static float ENEMY_ACCURACY_THRESHOLD = 0.6f;
+    public static float ENEMY_ATTACK_DAMAGE_MIN = 0.05f;
+    public static float ENEMY_ATTACK_DAMAGE_MAX = 0.3f;
 
     [Inject]
     private IObserver<ShipCreatedEvent> _creationBus;
 
+    [Inject]
+    private IObserver<DamageEnemyEvent> _damageBus;
+
     private float currentPhaseLength;
     private float phaseCountdown;
+    private float totalFuel;
+    private float fuelConsumptionRate;
+
     private ShipPhase phase = ShipPhase.HANGAR;
     public int shipID;
 
@@ -48,7 +62,7 @@ public class Ship : MonoBehaviour
         }
         else
         {
-            enterBattle();
+            startBattle();
         }
         Ship.NEXT_SHIP_ID++;
 
@@ -80,13 +94,19 @@ public class Ship : MonoBehaviour
         }
     }
 
+    private void setPhaseDuration(float phaseTimeInSeconds)
+    {
+        this.currentPhaseLength = phaseTimeInSeconds;
+        this.phaseCountdown = phaseTimeInSeconds;
+    }
+
     private void endPhase()
     {
         switch (this.phase)
         {
             case ShipPhase.FIGHT:
                 //BATTLE FUNCTIONS!
-                leaveBattle();
+                endBattle();
                 break;
             case ShipPhase.WAIT:
                 //OUTTA FUEL. ENTER DANGER_WAIT/ EMERGENCY LAND SEQUENCE
@@ -95,8 +115,10 @@ public class Ship : MonoBehaviour
                 //UNABLE TO MAKE EMERGENCY LANDING. RIP
                 break;
             case ShipPhase.HANGAR:
+                //TODO: trigger animation
+
                 //GET BACK OUT AND FIGHT (enter FIGHT phase)
-                enterBattle();
+                startBattle();
                 break;
         }
     }
@@ -113,19 +135,51 @@ public class Ship : MonoBehaviour
 
     private void enterHangar(float repairTime)
     {
-        this.currentPhaseLength = repairTime;
-        this.phaseCountdown = repairTime;
+        setPhaseDuration(repairTime);
     }
 
 
-    private void enterBattle()
+    private void startBattle()
     {
-        //TODO: calculate fuel usage and thus calculate the time spent in battle
-
         //TODO: remove this shitty and fake code
-        this.currentPhaseLength = 15f;
-        this.phaseCountdown = 15f;
+        setPhaseDuration(15f);
         this.randomizeShipCondition();
+    }
+    private void startBattleREAL()
+    {
+        //calculate fuel usage and thus calculate the time spent in battle
+        checkFuel();
+        float maxBattleTime = totalFuel / this.fuelConsumptionRate / FUEL_TIME_RATIO;
+        setPhaseDuration(UnityEngine.Random.Range(maxBattleTime * 0.25f, maxBattleTime));
+    }
+
+    private void checkFuel()
+    {
+        this.totalFuel = 0f;
+        float averageEngineIntegrity = 0f;
+        if (this.engines.Length > 0)
+        {
+            foreach (Engine iEngine in this.engines)
+            {
+                totalFuel += iEngine.getFuel();
+                averageEngineIntegrity += iEngine.getIntegrity();
+            }
+            averageEngineIntegrity /= this.engines.Length;
+        }
+        this.fuelConsumptionRate = (2 - averageEngineIntegrity);
+    }
+
+    private void consumeFuel(float totalFuelUsage)
+    {
+        if (this.engines.Length > 0)
+        {
+            float averageFuelUsage = totalFuelUsage / this.engines.Length;
+            foreach (Engine iEngine in this.engines)
+            {
+                iEngine.useFuel(averageFuelUsage);
+            }
+        }
+        this.totalFuel -= totalFuelUsage;
     }
 
     /**
@@ -133,25 +187,36 @@ public class Ship : MonoBehaviour
      */
     private void randomizeShipCondition()
     {
-        foreach(Part iPart in this.parts)
+        foreach (Part iPart in this.parts)
         {
             iPart.dealDamage(UnityEngine.Random.Range(0f, 0.3f));
         }
-        foreach(Engine iEngine in this.engines)
+        foreach (Engine iEngine in this.engines)
         {
             iEngine.useFuel(UnityEngine.Random.Range(0f, 0.3f));
         }
-        foreach(Weapon iWeapon in this.weapons)
+        foreach (Weapon iWeapon in this.weapons)
         {
-            iWeapon.useAmmo(1f);
+            iWeapon.useAmmoAndCalculateDamage(1f);
         }
     }
 
-    private void leaveBattle()
+    private void endBattle()
     {
-        //TODO
-        //consume fuel
+        //consume fuel (fuzzy)
+        consumeFuel(this.fuelConsumptionRate * this.currentPhaseLength * FUEL_TIME_RATIO);
         //flip coin for INITIATIVE (enemy or WE attack first)
+        if (
+        UnityEngine.Random.value < 0.5)
+        {
+            enemyOffensive();
+            shipOffensive();
+        }
+        else
+        {
+            shipOffensive();
+            enemyOffensive();
+        }
         //----->deal damage to enemy
         //----->take damage 
         //check for death
@@ -159,6 +224,64 @@ public class Ship : MonoBehaviour
 
         //TODO: remove this shitty and fake code
         this.enterHangar();
+    }
+
+    private void enemyOffensive()
+    {
+        //calculate # of attacks in time period. make that many attacks
+        int enemyAttacks = Mathf.RoundToInt(this.currentPhaseLength * ENEMY_ATTACK_RATE);
+        for (int i = 0; i < enemyAttacks; i++)
+        {
+            enemiesShootAtShip();
+        }
+    }
+
+    private void enemiesShootAtShip()
+    {
+        //roll for hit/miss
+        bool hit = UnityEngine.Random.value < ENEMY_ACCURACY_THRESHOLD;
+        if (hit)
+        {
+            //allow for ship to burn extra fuel to reroll and take 2nd outcome
+            if (this.totalFuel >= EVASION_FUEL_COST)
+            {
+                this.consumeFuel(EVASION_FUEL_COST);
+                hit = UnityEngine.Random.value < ENEMY_ACCURACY_THRESHOLD;
+            }
+        }
+        if (hit)
+        {
+            //roll for target
+            int targetPartIndex = UnityEngine.Random.Range(0, this.parts.Length);
+            this.parts[targetPartIndex].dealDamage(UnityEngine.Random.Range(ENEMY_ATTACK_DAMAGE_MIN, ENEMY_ATTACK_DAMAGE_MAX));
+        }
+    }
+
+    private void shipOffensive()
+    {
+        //loop through weapons
+        for (int i =0; i < this.weapons.Length; i++)
+        {
+            Weapon iWeapon = this.weapons[i];
+            //check if this is a missile that has been badly damaged
+            I_Explosive fireZeMissile = iWeapon as I_Explosive;
+            if (fireZeMissile != null && fireZeMissile.atDeathlyIntegrity())
+            {
+                //explossion!!!!!!!1!!
+                for (int j = 0; j < this.parts.Length; j++)
+                {
+                    this.parts[j].dealDamage(fireZeMissile.damageDoneIfDestroyed());
+                }
+            } else
+            {
+                //the number of shots taken is limited by time and ammunition
+                float maxAttackTime = iWeapon.getAmmo() / iWeapon.getAmmoUsagePerSecond();
+                float attackTime = maxAttackTime < this.currentPhaseLength ? maxAttackTime : this.currentPhaseLength;
+                float ammoUsed = attackTime * iWeapon.getAmmoUsagePerSecond();
+                //tell the sihp manager how much damage we dealt
+                _damageBus.OnNext(new DamageEnemyEvent(iWeapon.useAmmoAndCalculateDamage(ammoUsed)));
+            }
+        }
     }
 
     private void enterWait()
