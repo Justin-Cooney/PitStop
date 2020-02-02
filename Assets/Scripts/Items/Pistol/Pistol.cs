@@ -18,8 +18,10 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
 
     bool ICanBePickedUp.CanBePlaced => this.part != null;
 
+    private AudioSource _audioSource;
     void Start()
     {
+        _audioSource  = GetComponent<AudioSource>();
         _RigidBody = GetComponent<Rigidbody>();
     }
 
@@ -66,8 +68,8 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
 
     public void ItemAction(PlayerController player)
     {
-        Debug.Log("PEWPEW");
-        var position = transform.position + (transform.forward * 0.5f);
+        _audioSource.Play();
+        var position = transform.position + (transform.forward * 0.8f);
         GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
     }
 

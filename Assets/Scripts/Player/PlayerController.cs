@@ -184,6 +184,7 @@ public class PlayerController : MonoBehaviour
         {
             _stunned = 0.5f;
             DropOrPickupItem();
+            GameObject.Destroy(other.gameObject);
         }
         else
         {
