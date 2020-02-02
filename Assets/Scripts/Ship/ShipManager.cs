@@ -60,6 +60,7 @@ public class ShipManager : MonoBehaviour
         {
             nextPlease();
         }
+        Debug.Log("EVENT: SHIP DEPARTING");
     }
 
     private void handleShipEmergency(ShipPhaseEvent e)
@@ -71,9 +72,9 @@ public class ShipManager : MonoBehaviour
         //we are going to tell the current ship to GTFO
         if (shipInHanger > 0)
         {
-            Ship currentShip = this.shipByID[shipInHanger];
-            if (currentShip != null)
+            if (this.shipByID.ContainsKey(shipInHanger))
             {
+                Ship currentShip = this.shipByID[shipInHanger];
                 currentShip.startBattle();
             }
         }
@@ -88,6 +89,7 @@ public class ShipManager : MonoBehaviour
         {
             nextPlease();
         }
+        Debug.Log("EVENT: SHIP ASKING TO DOCK. this.hangarQueue.Count: "+ this.hangarQueue.Count+ " shipInHanger: "+ shipInHanger);
     }
 
     private void nextPlease()
@@ -100,9 +102,10 @@ public class ShipManager : MonoBehaviour
 
     private void inviteShipIntoHangar(int siteID)
     {
-        Ship nextShip = this.shipByID[siteID];
-        if (nextShip != null)
+        Debug.Log("INVITE SHIP WITH ID " + siteID);
+        if (this.shipByID.ContainsKey(siteID))
         {
+            Ship nextShip = this.shipByID[siteID];
             nextShip.enterHangar();
             shipInHanger = siteID;
         }
@@ -111,6 +114,7 @@ public class ShipManager : MonoBehaviour
     private void handleShipCreation(ShipCreatedEvent e)
     {
         this.shipByID[e.ship.shipID] = e.ship;
+        Debug.Log("EVENT: SHIP CREATED");
     }
 
     private void handleEnemyDamage(DamageEnemyEvent e)
@@ -120,5 +124,6 @@ public class ShipManager : MonoBehaviour
         {
             Debug.LogWarning("VICTORY! WE HAVE CRUSHED THE ENEMY SLIGHTLY FASTER THAN THEY CRUSHED US!!!!!!!!!!!!!!!!!!!!");
         }
+        Debug.Log("EVENT: ship dealt " + e.damageDealt + " damage. " + enemyHealthRemaining + " enemy health remains");
     }
 }

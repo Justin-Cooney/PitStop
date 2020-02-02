@@ -14,7 +14,7 @@ public class Ship : MonoBehaviour
     //CONSTANTS
     private static float HANGAR_MIN_TIME = 5f;
     private static float HANGAR_MAX_TIME = 20f;
-    public static float FUEL_TIME_RATIO = 0.01f;
+    public static float FUEL_TIME_RATIO = 0.04f;
     public static float EVASION_FUEL_COST = 0.1f;
     public static float AMMO_TIME_RATIO = 1;
     public static float AMMO_DAMAGE_RATTIO = 1;
@@ -40,7 +40,7 @@ public class Ship : MonoBehaviour
     private float currentPhaseLength;
     private float phaseCountdown;
     private float totalFuel;
-    private float fuelConsumptionRate;
+    private float fuelConsumptionModifier;
 
     private ShipPhase phase = ShipPhase.HANGAR;
     public int shipID;
@@ -59,10 +59,18 @@ public class Ship : MonoBehaviour
     public void Initialize()
     {
 
+        //quick and dirty collection of all child parts by type/interface
+        parts = this.GetComponentsInChildren<Part>();
+        weapons = this.GetComponentsInChildren<Weapon>();
+        engines = this.GetComponentsInChildren<Engine>();
+        criticalParts = this.GetComponentsInChildren<I_Critical>();
+        vulnerableParts = this.GetComponentsInChildren<I_Vulnerable>();
+        explosiveParts = this.GetComponentsInChildren<I_Explosive>();
+
+        //ID stuff
+
         Ship.COUNT++;
         this.shipID = Ship.NEXT_SHIP_ID;
-        //tell manager we exist
-        _creationBus.OnNext(new ShipCreatedEvent(this));
         //put 1st ship in hangar (with very short timer). the rest are already fighting
         if (Ship.COUNT == 1)
         {
@@ -73,25 +81,20 @@ public class Ship : MonoBehaviour
             startBattle();
         }
         Ship.NEXT_SHIP_ID++;
-
-        //quick and dirty collection of all child parts by type/interface
-        parts = this.GetComponents<Part>();
-        weapons = this.GetComponents<Weapon>();
-        engines = this.GetComponents<Engine>();
-        criticalParts = this.GetComponents<I_Critical>();
-        vulnerableParts = this.GetComponents<I_Vulnerable>();
-        explosiveParts = this.GetComponents<I_Explosive>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        //tell manager we exist
+        _creationBus.OnNext(new ShipCreatedEvent(this));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (this.phaseCountdown > 0)
+        //Debug.Log("UPDATE: phaseCountdown: "+ phaseCountdown);
+        if (Mathf.Pow(this.phaseCountdown, 2) > float.Epsilon)
         {
             this.phaseCountdown -= Time.deltaTime;
             if (this.phaseCountdown <= 0)
@@ -107,6 +110,7 @@ public class Ship : MonoBehaviour
         this.currentPhaseLength = phaseTimeInSeconds;
         this.phaseCountdown = phaseTimeInSeconds;
         this.phase = newPhase;
+        Debug.Log("SWITCH PHASE. TIMER: " + phaseTimeInSeconds + ", NEW PHASE: " + newPhase);
     }
 
     private void endPhase()
@@ -115,16 +119,22 @@ public class Ship : MonoBehaviour
         {
             case ShipPhase.FIGHT:
                 //BATTLE FUNCTIONS!
+                Debug.Log("END OF FIGHT PHASE. CALCULATE DAMAGE");
                 endBattle();
                 break;
             case ShipPhase.WAIT:
                 //OUTTA FUEL. ENTER DANGER_WAIT/ EMERGENCY LAND SEQUENCE
+                Debug.Log("END OF WAIT PHASE. HALP");
+                enterDangerWait();
                 break;
             case ShipPhase.DANGER_WAIT:
                 //UNABLE TO MAKE EMERGENCY LANDING. RIP
+                Debug.Log("END OF DANGER PHASE. R I P");
+                dieTerribleSpaceDeath();
                 break;
             case ShipPhase.HANGAR:
                 //GET BACK OUT AND FIGHT (enter FIGHT phase)
+                Debug.Log("END OF HANGAR PHASE. FIGHT FIGHT FIGHT ");
                 startBattle();
                 break;
         }
@@ -139,7 +149,7 @@ public class Ship : MonoBehaviour
     {
         //determine how much fuel was spend just FLYING AROUND and WAITING        
         float timeElapsed = currentPhaseLength - phaseCountdown;
-        consumeFuel(this.fuelConsumptionRate * timeElapsed * FUEL_TIME_RATIO);
+        consumeFuel(this.fuelConsumptionModifier * timeElapsed * FUEL_TIME_RATIO);
         enterHangar(this.calculateRepairTime());
     }
 
@@ -154,7 +164,8 @@ public class Ship : MonoBehaviour
         _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.LEAVING_HANGAR));
         //calculate fuel usage and thus calculate the time spent in battle
         checkFuel();
-        float maxBattleTime = totalFuel / this.fuelConsumptionRate / FUEL_TIME_RATIO;
+        float maxBattleTime = totalFuel / this.fuelConsumptionModifier / FUEL_TIME_RATIO;
+        Debug.Log("FUEL CALC: " + maxBattleTime + " = " + totalFuel + " / " + this.fuelConsumptionModifier + " / " + FUEL_TIME_RATIO);
         switchPhase(UnityEngine.Random.Range(maxBattleTime * 0.25f, maxBattleTime), ShipPhase.FIGHT);
     }
 
@@ -171,7 +182,7 @@ public class Ship : MonoBehaviour
             }
             averageEngineIntegrity /= this.engines.Length;
         }
-        this.fuelConsumptionRate = (2 - averageEngineIntegrity);
+        this.fuelConsumptionModifier = (2 - averageEngineIntegrity);
     }
 
     private void consumeFuel(float totalFuelUsage)
@@ -187,32 +198,12 @@ public class Ship : MonoBehaviour
         this.totalFuel -= totalFuelUsage;
     }
 
-    /**
-     * This trash is for testing purposes. It will randomly deal some damage, use some fuel and use some ammo
-     */
-    private void randomizeShipCondition()
-    {
-        foreach (Part iPart in this.parts)
-        {
-            iPart.dealDamage(UnityEngine.Random.Range(0f, 0.3f));
-        }
-        foreach (Engine iEngine in this.engines)
-        {
-            iEngine.useFuel(UnityEngine.Random.Range(0f, 0.3f));
-        }
-        foreach (Weapon iWeapon in this.weapons)
-        {
-            iWeapon.useAmmoAndCalculateDamage(1f);
-        }
-    }
-
     private void endBattle()
     {
         //consume fuel (fuzzy)
-        consumeFuel(this.fuelConsumptionRate * this.currentPhaseLength * FUEL_TIME_RATIO);
+        consumeFuel(this.fuelConsumptionModifier * this.currentPhaseLength * FUEL_TIME_RATIO);
         //flip coin for INITIATIVE (enemy or WE attack first)
-        if (
-        UnityEngine.Random.value < 0.5)
+        if (UnityEngine.Random.value < 0.5)
         {
             enemyOffensive();
             shipOffensive();
@@ -289,6 +280,7 @@ public class Ship : MonoBehaviour
     {
         //calculate # of attacks in time period. make that many attacks
         int enemyAttacks = Mathf.RoundToInt(this.currentPhaseLength * ENEMY_ATTACK_RATE);
+        Debug.LogWarning("Enemy makes " + enemyAttacks + " attacks");
         for (int i = 0; i < enemyAttacks; i++)
         {
             enemiesShootAtShip();
@@ -297,22 +289,28 @@ public class Ship : MonoBehaviour
 
     private void enemiesShootAtShip()
     {
+        Debug.LogWarning("ENEMY SHOOTS");
         //roll for hit/miss
         bool hit = UnityEngine.Random.value < ENEMY_ACCURACY_THRESHOLD;
         if (hit)
         {
+            Debug.LogWarning("ENEMY HITS");
             //allow for ship to burn extra fuel to reroll and take 2nd outcome
             if (this.totalFuel >= EVASION_FUEL_COST)
             {
+                Debug.LogWarning("SHIP DODGES. " + this.totalFuel + " Fuel remaining");
                 this.consumeFuel(EVASION_FUEL_COST);
                 hit = UnityEngine.Random.value < ENEMY_ACCURACY_THRESHOLD;
             }
         }
         if (hit)
         {
+            Debug.LogWarning("ENEMY STILL HITS!");
             //roll for target
             int targetPartIndex = UnityEngine.Random.Range(0, this.parts.Length);
-            this.parts[targetPartIndex].dealDamage(UnityEngine.Random.Range(ENEMY_ATTACK_DAMAGE_MIN, ENEMY_ATTACK_DAMAGE_MAX));
+            float enemyDamage = UnityEngine.Random.Range(ENEMY_ATTACK_DAMAGE_MIN, ENEMY_ATTACK_DAMAGE_MAX);
+            Debug.LogWarning("ENEMY STILL HITS! Targets part at index " + targetPartIndex + " and deals " + enemyDamage + " damage!");
+            this.parts[targetPartIndex].dealDamage(enemyDamage);
         }
     }
 
@@ -348,10 +346,10 @@ public class Ship : MonoBehaviour
 
     private void enterWait()
     {
-        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.TAKE_A_NUMBER));
         checkFuel();
-        float maxWaitTime = totalFuel / this.fuelConsumptionRate / FUEL_TIME_RATIO;
+        float maxWaitTime = totalFuel / this.fuelConsumptionModifier / FUEL_TIME_RATIO;
         switchPhase(maxWaitTime, ShipPhase.WAIT);
+        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.TAKE_A_NUMBER));
     }
 
     private void enterDangerWait()

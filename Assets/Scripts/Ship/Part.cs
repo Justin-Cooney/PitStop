@@ -11,6 +11,7 @@ public class Part : MonoBehaviour
     public void dealDamage(float rawDamage)
     {
         this.integrity -= rawDamage;
+        Debug.LogWarning("Integrity at " + this.integrity + " on part "+this.name);
     }
 
     public float getIntegrity()
