@@ -24,25 +24,20 @@ namespace Assets.Scripts.Items
         public void DropItem()
         {
             _carryingPlayer = Option.None<PlayerController>();
+            transform.SetParent (null);
         }
 
         public void PickUpItem(PlayerController player)
         {
             _carryingPlayer = Option.Some(player);
+            transform.SetParent (player.transform);
+            transform.localRotation = player.transform.rotation;
+            transform.localPosition = Vector3.zero + new Vector3(0, 0, 1.1f);
         }
 
         void Update()
         {
-            _carryingPlayer.Do(
-                p =>
-                {
-                    transform.position = p.transform.position + (p.transform.forward * 1.1f);
-                    transform.rotation = p.transform.rotation;
-                },
-                () =>
-                {
-                }
-            );
+            
         }
 
         public void OnPlaceableAreaEnter(Part part) {
@@ -56,12 +51,12 @@ namespace Assets.Scripts.Items
         public void UseItem ()
         {
             //remove item from player
-            DropItem();
+            _carryingPlayer = Option.None<PlayerController> ();
             //give item to the ship part
             this.part.receiveItem(this.objectType);
             this.part = null;
             //destroy self
-            GameObject.Destroy(this);
+            Destroy (gameObject);
         }
 
     }

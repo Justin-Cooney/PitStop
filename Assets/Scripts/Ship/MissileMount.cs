@@ -6,13 +6,27 @@ public class MissileMount : Weapon, I_Explosive
         return 0.05f;
     }
 
-    protected override float getAmmoUsagePerSecond()
+    public override float getAmmoUsagePerSecond()
     {
         return 1f;
     }
 
-    protected override float getDamagePerAmmo()
+    protected override float calculateDamage(float ammoUsage)
     {
-        return 50f;
+        return ammoUsage * 50f;
+    }
+
+    new public void dealDamage(float rawDamage)
+    {
+        //the mount cannot be damaged.. only the missile itself. then... boom
+        if (this.ammo > 0.1f)
+        {
+            this.integrity -= rawDamage;
+        }
+    }
+
+    public bool atDeathlyIntegrity()
+    {
+        return this.integrity <= 0.25;
     }
 }

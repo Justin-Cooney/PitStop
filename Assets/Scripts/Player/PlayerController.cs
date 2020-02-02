@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
     private void DropCarriedItem(ICanBePickedUp itemToDrop)
     {
         if(itemToDrop.CanBePlaced) {
-            Debug.Log ("yahoo");
+            itemToDrop.UseItem ();
         } else {
             itemToDrop.DropItem();
         }
