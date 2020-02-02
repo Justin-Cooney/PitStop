@@ -22,6 +22,7 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<ToggleDoor>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<DoorUpdated>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<OxygenCritical>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<ShakeCamera>>().AsSingle();
 		}
 	}
 }

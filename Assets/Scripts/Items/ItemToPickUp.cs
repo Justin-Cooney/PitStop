@@ -51,12 +51,12 @@ namespace Assets.Scripts.Items
         public void UseItem ()
         {
             //remove item from player
-            DropItem();
+            _carryingPlayer = Option.None<PlayerController> ();
             //give item to the ship part
             this.part.receiveItem(this.objectType);
             this.part = null;
             //destroy self
-            GameObject.Destroy(this);
+            Destroy (gameObject);
         }
 
     }
