@@ -768,6 +768,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaveFire
       objectReference: {fileID: 0}
+    - target: {fileID: 3343445849290415063, guid: 229a7966e7ea91643a0965a02c9df889,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3343445850201368865, guid: 229a7966e7ea91643a0965a02c9df889,
         type: 3}
       propertyPath: m_BoundingSphereOverride.x
