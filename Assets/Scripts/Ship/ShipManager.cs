@@ -97,6 +97,8 @@ public class ShipManager : MonoBehaviour
 
     private void handleShipDockingRequest(ShipPhaseEvent e)
     {
+        //check if ship exists 
+        ensureShipIsRegistered(e.ship);
         //add this ship to the waiting list
         this.hangarQueue.Add(e.ship.shipID);
         //if there is nobody here, just call them in now
