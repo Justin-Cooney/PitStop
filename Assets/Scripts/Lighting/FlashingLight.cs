@@ -11,6 +11,7 @@ public class FlashingLight : MonoBehaviour
     private Light _light;
     private bool _increasing;
     public bool AlwaysFlash = false;
+    private AudioSource audioSrc;
 
     [Inject]
     public IObservable<ShakeCamera> _shakeCamera;
@@ -28,6 +29,7 @@ public class FlashingLight : MonoBehaviour
     void Start()
     {
         _light = GetComponent<Light>();
+        audioSrc = GetComponent<AudioSource> ();
     }
 
     // Update is called once per frame
@@ -35,9 +37,14 @@ public class FlashingLight : MonoBehaviour
     {
         if (!AlwaysFlash)
         {
+            if(!audioSrc.isPlaying) {
+                audioSrc.Play ();
+            }
             _activeTime -= 1 * Time.deltaTime;
-            if (_activeTime <= 0)
+            if (_activeTime <= 0) {
                 _increasing = false;
+                audioSrc.Stop ();
+            }
         }
 
         if (_increasing)
