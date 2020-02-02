@@ -10,13 +10,13 @@ public class MainMenuController : MonoBehaviour
     private bool _isControlsShowing = false;
     public Button _button;
 
+
     void Start()
     {
        var firstButton = GameObject.Find("Play_button").GetComponent<Button>();
         firstButton.Select();
         firstButton.OnSelect(null);
     }
-
     public void OnPlay()
     {
         SceneManager.LoadScene("GamePlayFinal", LoadSceneMode.Single);
