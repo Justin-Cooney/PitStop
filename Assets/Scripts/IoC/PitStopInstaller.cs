@@ -10,6 +10,7 @@ namespace Assets.Scripts.IoC
 	{
 		public PlayerInput input;
 		public GameObject slug;
+		public GameObject nuke;
 
 		public override void InstallBindings()
 		{
@@ -27,8 +28,11 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<ShakeCamera>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<SlugKilled>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<SlugSpawned>>().AsSingle();
+			Container.BindFactory<Nuke, Nuke.NukeFactory>().FromComponentInNewPrefab(nuke);
 			Container.BindFactory<Slug, Slug.SlugFactory>().FromComponentInNewPrefab(slug);
-
+			Container.BindInterfacesAndSelfTo<Subject<NextWave>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<PlayerDead>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<NukeExplodes>>().AsSingle();
 		}
 	}
 }

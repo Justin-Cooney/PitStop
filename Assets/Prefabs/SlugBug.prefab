@@ -318,6 +318,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathEffects: {fileID: 0}
+  SuperPistol: {fileID: 0}
+  DualPistol: {fileID: 0}
+  Nuke: {fileID: 0}
 --- !u!1 &7360595716781961885
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,6 +401,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathEffects: {fileID: 131164, guid: 3c5f4e32698bdb04eaed647f60310510, type: 3}
+  SuperPistol: {fileID: 1632831992628394015, guid: 018193d324d2bb44e881c368e3a015e7,
+    type: 3}
+  DualPistol: {fileID: 5671570458980091185, guid: c4d257e4740b43a4b83455f0304a62fc,
+    type: 3}
+  Nuke: {fileID: 6945806212385169056, guid: 93e09045b88029245810bf55db68fde9, type: 3}
 --- !u!65 &7884838904332345577
 BoxCollider:
   m_ObjectHideFlags: 0
