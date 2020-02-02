@@ -75,8 +75,10 @@ public class Ship : MonoBehaviour
         //ID stuff
         this.shipID = Ship.NEXT_SHIP_ID;
         Ship.NEXT_SHIP_ID++;
+        Debug.LogError("new ship id is " + this.shipID);
 
         Ship.COUNT++;
+        Debug.LogError("new ship count is " + Ship.COUNT);
         //put 1st ship in hangar (with very short timer). the rest are already fighting
         if (Ship.COUNT == 1)
         {
