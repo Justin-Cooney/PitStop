@@ -394,4 +394,12 @@ public class Ship : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void checkForFire()
+    {
+        foreach(Part iPart in this.parts)
+        {
+            iPart.toggleFire(iPart.getIntegrity() <= 0.25);
+        }
+    }
+
 }
