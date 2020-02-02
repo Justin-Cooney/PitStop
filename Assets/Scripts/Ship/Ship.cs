@@ -165,8 +165,9 @@ public class Ship : MonoBehaviour
         //calculate fuel usage and thus calculate the time spent in battle
         checkFuel();
         float maxBattleTime = totalFuel / this.fuelConsumptionModifier / FUEL_TIME_RATIO;
+        maxBattleTime = maxBattleTime > 9f ? maxBattleTime : 9f;
         Debug.Log("FUEL CALC: " + maxBattleTime + " = " + totalFuel + " / " + this.fuelConsumptionModifier + " / " + FUEL_TIME_RATIO);
-        switchPhase(UnityEngine.Random.Range(maxBattleTime * 0.25f, maxBattleTime), ShipPhase.FIGHT);
+        switchPhase(UnityEngine.Random.Range(maxBattleTime * 0.33f, maxBattleTime), ShipPhase.FIGHT);
     }
 
     private void checkFuel()
