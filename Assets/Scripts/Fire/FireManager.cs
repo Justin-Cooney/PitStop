@@ -27,6 +27,7 @@ public class FireManager : MonoBehaviour
     public void Initialize()
     {
         _nextWave.Where(e => e.Number >= 4).Subscribe(e => _waveFire = true);
+        _nextWave.Where(e => e.Number >= 8).Subscribe(e => _timeToFire = 0);
     }
 
     private bool _waveFire = false;
