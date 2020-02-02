@@ -13,6 +13,6 @@ public class PortalBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * 4 *  Time.deltaTime);
+        transform.Translate(Vector3.forward * 8 *  Time.deltaTime);
     }
 }

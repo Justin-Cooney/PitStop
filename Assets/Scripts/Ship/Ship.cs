@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Doors;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -57,6 +58,8 @@ public class Ship : MonoBehaviour
 
     private Animator animator;
     private Transform tform;
+
+    public GameObject _collisionExplosion;
 
     [Inject]
     public void Initialize()
@@ -399,6 +402,20 @@ public class Ship : MonoBehaviour
         foreach(Part iPart in this.parts)
         {
             iPart.toggleFire(iPart.getIntegrity() <= 0.25);
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Collide");
+        if (other.gameObject.GetComponent<Door>())
+        {
+            GameObject.Instantiate(_collisionExplosion, this.transform.position, this.transform.rotation);
+            Debug.Log("DOOR HURT ME!");
+            foreach (Part iPart in this.parts)
+            {
+                iPart.dealDamage(0.25f);
+            }
         }
     }
 

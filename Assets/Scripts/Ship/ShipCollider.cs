@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Doors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Assets.Scripts.Ship
 		public void OnTriggerEnter(Collider other)
 		{
 			Debug.Log("Collide");
-			if(other.GetComponent<DoorPanel>())
+			if(other.gameObject.GetComponent<Door>())
 				Debug.Log("DOOR HURT ME!");
 		}
 	}

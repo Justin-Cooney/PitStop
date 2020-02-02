@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    private bool _controls = false;
+    private bool _isCreditsShowing = false;
+    private bool _isControlsShowing = false;
 
     public void OnPlay()
     {
@@ -19,7 +20,7 @@ public class MainMenuController : MonoBehaviour
 
     public void OnControls()
     {
-        if (!_controls)
+        if (!_isControlsShowing)
         {
             SceneManager.LoadScene("Controls", LoadSceneMode.Additive);
         }
@@ -28,7 +29,21 @@ public class MainMenuController : MonoBehaviour
             SceneManager.UnloadScene("Controls");
         }
 
-        _controls = !_controls;
+        _isControlsShowing = !_isControlsShowing;
+    }
+
+    public void OnCredits()
+    {
+        if (!_isCreditsShowing)
+        {
+            SceneManager.LoadScene("Credits", LoadSceneMode.Additive);
+        }
+        else
+        {
+            SceneManager.UnloadScene("Credits");
+        }
+
+        _isCreditsShowing = !_isCreditsShowing;
     }
 
     public void OnExit()
