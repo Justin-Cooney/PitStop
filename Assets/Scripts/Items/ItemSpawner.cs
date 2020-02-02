@@ -20,7 +20,6 @@ public class ItemSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(_current.transform.position);
         if ((_current.transform.position.x > transform.position.x + 0.1f
             || _current.transform.position.x < transform.position.x - 0.1f
             || _current.transform.position.z > transform.position.z + 0.1f
