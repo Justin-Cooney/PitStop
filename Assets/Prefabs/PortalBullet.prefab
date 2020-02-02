@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2daf8f03d2991494480de392cd51467b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeToSpawnPortal: 1
+  TimeToSpawnPortal: 0.4
 --- !u!114 &-8165921887213787167
 MonoBehaviour:
   m_ObjectHideFlags: 0
