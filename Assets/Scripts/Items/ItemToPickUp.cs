@@ -59,5 +59,8 @@ namespace Assets.Scripts.Items
             Destroy (gameObject);
         }
 
+        public void ItemAction(PlayerController player)
+        {
+        }
     }
 }

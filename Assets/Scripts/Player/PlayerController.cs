@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
+
         if (_stunned <= 0 && !_isDead)
         {
             _characterController.Move(GetVelocity());
@@ -203,6 +204,12 @@ public class PlayerController : MonoBehaviour
             _sprinting = true;
             _sprintCooldown = _sprintDuration;
         }
+    }
+
+    public void OnUseItem(InputValue value)
+    {
+        Debug.Log("uSEiTEM");
+        CarriedItem.Apply(i => i.ItemAction(this));
     }
 
     public void PlayerDie()
