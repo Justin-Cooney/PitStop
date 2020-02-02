@@ -7,11 +7,25 @@ public class Part : MonoBehaviour
 
     protected float integrity = 1f;
     public bool onFire = false;
+    Renderer rend;
+    Color startColor;
+    Color damageColor = Color.black;
 
     public void dealDamage(float rawDamage)
     {
         this.integrity -= rawDamage;
         Debug.LogWarning("Integrity at " + this.integrity + " on part "+this.name);
+    }
+
+    void Start()
+    {
+        rend = GetComponent<Renderer>();
+        startColor = rend.material.color;
+    }
+
+    public void Update()
+    {
+        rend.material.color = Color.Lerp(damageColor, startColor, this.integrity);
     }
 
     public float getIntegrity()
