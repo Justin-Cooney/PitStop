@@ -12,8 +12,8 @@ public class Ship : MonoBehaviour
 {
 
     //CONSTANTS
-    private static float HANGAR_MIN_TIME = 5f;
-    private static float HANGAR_MAX_TIME = 20f;
+    private static float HANGAR_MIN_TIME = 10f;
+    private static float HANGAR_MAX_TIME = 25f;
     public static float FUEL_TIME_RATIO = 0.04f;
     public static float EVASION_FUEL_COST = 0.1f;
     public static float AMMO_TIME_RATIO = 1;
@@ -55,6 +55,9 @@ public class Ship : MonoBehaviour
     public I_Vulnerable[] vulnerableParts;
     public I_Explosive[] explosiveParts;
 
+    private Animator animator;
+    private Transform tform;
+
     [Inject]
     public void Initialize()
     {
@@ -66,6 +69,8 @@ public class Ship : MonoBehaviour
         criticalParts = this.GetComponentsInChildren<I_Critical>();
         vulnerableParts = this.GetComponentsInChildren<I_Vulnerable>();
         explosiveParts = this.GetComponentsInChildren<I_Explosive>();
+        animator = this.GetComponent<Animator> ();
+        tform = this.GetComponent<Transform> ();
 
         //ID stuff
 
@@ -147,6 +152,16 @@ public class Ship : MonoBehaviour
 
     public void enterHangar()
     {
+        if(this.phase == ShipPhase.DANGER_WAIT) {
+            tform.rotation = Quaternion.identity;
+            tform.position = new Vector3 (50, 15, -5);
+            animator.SetTrigger ("FlyInCritical");
+        } else {
+            tform.rotation = Quaternion.identity;
+            tform.position = new Vector3 (100, 25, -5);
+            animator.SetTrigger ("FlyIn");
+        }
+
         //determine how much fuel was spend just FLYING AROUND and WAITING        
         float timeElapsed = currentPhaseLength - phaseCountdown;
         consumeFuel(this.fuelConsumptionModifier * timeElapsed * FUEL_TIME_RATIO);
@@ -160,13 +175,17 @@ public class Ship : MonoBehaviour
 
     public void startBattle()
     {
+        tform.rotation = Quaternion.identity;
+        tform.position = new Vector3 (0, 2, -5);
+        animator.SetTrigger ("FlyOut");
         //tell the ship manager that we are leaving
         _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.LEAVING_HANGAR));
         //calculate fuel usage and thus calculate the time spent in battle
         checkFuel();
         float maxBattleTime = totalFuel / this.fuelConsumptionModifier / FUEL_TIME_RATIO;
+        maxBattleTime = maxBattleTime > 9f ? maxBattleTime : 9f;
         Debug.Log("FUEL CALC: " + maxBattleTime + " = " + totalFuel + " / " + this.fuelConsumptionModifier + " / " + FUEL_TIME_RATIO);
-        switchPhase(UnityEngine.Random.Range(maxBattleTime * 0.25f, maxBattleTime), ShipPhase.FIGHT);
+        switchPhase(UnityEngine.Random.Range(maxBattleTime * 0.33f, maxBattleTime), ShipPhase.FIGHT);
     }
 
     private void checkFuel()
@@ -354,8 +373,8 @@ public class Ship : MonoBehaviour
 
     private void enterDangerWait()
     {
-        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.EMERGENCY_LANDING));
         switchPhase(5f, ShipPhase.DANGER_WAIT);
+        _phaseBus.OnNext (new ShipPhaseEvent (this.shipID, ShipPhaseEvent.EType.EMERGENCY_LANDING));
     }
 
     private void dieTerribleSpaceDeath()
