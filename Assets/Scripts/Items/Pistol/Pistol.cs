@@ -16,10 +16,15 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
     public bool CanBePickedUp => !_carryingPlayer.HasValue();
     public bool IsPickedUp => _carryingPlayer.HasValue();
 
+    public bool IsSuperPistol = false;
+    public bool IsDualPistol = false;
+
     bool ICanBePickedUp.CanBePlaced => this.part != null;
 
+    private AudioSource _audioSource;
     void Start()
     {
+        _audioSource  = GetComponent<AudioSource>();
         _RigidBody = GetComponent<Rigidbody>();
     }
 
@@ -34,7 +39,7 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
         _carryingPlayer = Option.Some(player);
         transform.SetParent(player.transform);
         transform.rotation = player.transform.rotation;
-        transform.localPosition = Vector3.zero + new Vector3(0, 0, 1.1f);
+        transform.localPosition = Vector3.forward * 1.1f;
     }
 
     void Update()
@@ -64,10 +69,36 @@ public class Pistol : MonoBehaviour, ICanBePickedUp
         Destroy(gameObject);
     }
 
+    private int _superPistolShots = 60;
+
     public void ItemAction(PlayerController player)
     {
-        Debug.Log("PEWPEW");
-        GameObject.Instantiate(Bullet, transform.position, player.gameObject.transform.rotation);
+        _audioSource.Play();
+        var position = transform.position + (transform.forward * 0.8f);
+
+        if(IsSuperPistol && _superPistolShots > 0)
+        {
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+            _superPistolShots -= 1;
+        }
+        else if(IsDualPistol)
+        {
+            var position1 = new Vector3(position.x + 0.3f, position.y, position.z);
+            var position2 = new Vector3(position.x - 0.3f, position.y, position.z);
+            GameObject.Instantiate(Bullet, position1, player.gameObject.transform.rotation);
+            GameObject.Instantiate(Bullet, position2, player.gameObject.transform.rotation);
+        }
+        else
+        {
+            GameObject.Instantiate(Bullet, position, player.gameObject.transform.rotation);
+        }
     }
 
 }

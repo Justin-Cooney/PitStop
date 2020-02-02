@@ -10,6 +10,8 @@ public class FlashingLight : MonoBehaviour
 {
     private Light _light;
     private bool _increasing;
+    public bool AlwaysFlash = false;
+
     [Inject]
     public IObservable<ShakeCamera> _shakeCamera;
 
@@ -31,9 +33,12 @@ public class FlashingLight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _activeTime -= 1 * Time.deltaTime;
-        if (_activeTime <= 0)
-            _increasing = false;
+        if (!AlwaysFlash)
+        {
+            _activeTime -= 1 * Time.deltaTime;
+            if (_activeTime <= 0)
+                _increasing = false;
+        }
 
         if (_increasing)
             _light.intensity += 2 * Time.deltaTime;

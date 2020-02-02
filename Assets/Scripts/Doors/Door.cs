@@ -18,18 +18,22 @@ namespace Assets.Scripts.Doors
 		[Inject]
 		IObserver<DoorUpdated> _doorUpdated;
 
+		private AudioSource audioSource;
+
 		public int DoorId;
 		public bool _isOpen;
 
 		[Inject]
 		public void Initialize()
 		{
+			audioSource = GetComponent<AudioSource>();
 			_toggleDoor.Where(e => e.DoorId == DoorId).Subscribe(OnToggleDoor);
 		}
 
 		public void OnToggleDoor(ToggleDoor e)
 		{
 			_isOpen = !_isOpen;
+			audioSource.Play();
 		}
 
 		public void Update()

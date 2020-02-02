@@ -27,6 +27,13 @@ public class PlayerController : MonoBehaviour
     [Inject]
     private IObserver<LogEvent> _logEvent;
 
+    [Inject]
+    private IObserver<PlayerDead> _playerDead;
+
+    [Inject]
+    private IObservable<NextWave> _nextWave;
+
+
     private CharacterController _characterController;
     private float _speed = 15;
     private float _rotationSpeed = 25;
@@ -41,15 +48,23 @@ public class PlayerController : MonoBehaviour
 
     private bool _isDead = false;
 
+    public bool _waveMode = false;
+
+    public float _invincibility = 0f;
+
     [Inject]
     public void Initialize()
     {
         _characterController = this.GetComponent<CharacterController>();
+        _nextWave.Subscribe(e => {
+            if(_isDead)
+                Respawn();
+            });
     }
 
     public void Update()
     {
-
+        _invincibility -= 1 * Time.deltaTime;
         if (_stunned <= 0 && !_isDead)
         {
             _characterController.Move(GetVelocity());
@@ -76,12 +91,21 @@ public class PlayerController : MonoBehaviour
 
         if (_isDead && _stunned <= 0)
         {
-            _characterController.enabled = false;
-            transform.position = _respawnTransform.position;
-            _characterController.enabled = true;
-            GameObject.Instantiate(_spawnEffects, transform);
-            _isDead = false;
+            if (!_waveMode)
+            {
+                Respawn();
+            }
         }
+    }
+
+    private void Respawn()
+    {
+        _characterController.enabled = false;
+        transform.position = _respawnTransform.position;
+        _characterController.enabled = true;
+        GameObject.Instantiate(_spawnEffects, transform);
+        _isDead = false;
+        _invincibility = 2f;
     }
 
     private Vector3 GetVelocity()
@@ -169,11 +193,32 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger");
-        if (other.GetComponent<Fire>() != null)
+        if (other.GetComponent<Fire>() != null && _invincibility <= 0 && !_isDead)
+        {
+            if (_waveMode && other.GetComponent<Fire>().IsCooled())
+                return;
+
+            _stunned = 0.5f;
+            if (!_waveMode)
+                DropOrPickupItem();
+            _playerDead.OnNext(new PlayerDead());
+            _isDead = true;
+        }
+        else if (other.GetComponent<Slug>() != null && _invincibility <= 0 && !_isDead)
+        {
+            _stunned = 0.5f;
+            if(!_waveMode)
+                DropOrPickupItem();
+            _playerDead.OnNext(new PlayerDead());
+            _isDead = true;
+        }
+        else if (other.GetComponent<Bullet>() != null && _invincibility <= 0 && !_isDead)
         {
             _stunned = 0.5f;
             DropOrPickupItem();
+            GameObject.Destroy(other.gameObject);
+            _playerDead.OnNext(new PlayerDead());
+            _isDead = true;
         }
         else
         {
@@ -208,8 +253,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnUseItem(InputValue value)
     {
-        Debug.Log("uSEiTEM");
-        CarriedItem.Apply(i => i.ItemAction(this));
+        if(!_isDead)
+            CarriedItem.Apply(i => i.ItemAction(this));
     }
 
     public void PlayerDie()
