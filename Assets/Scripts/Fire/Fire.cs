@@ -18,7 +18,7 @@ public class Fire : MonoBehaviour
             _coolTime -= 1 * Time.deltaTime;
     }
 
-    public bool IsCooled() => _coolTime <= 0;
+    public bool IsCooled() => _coolTime > 0;
 
     public void OnTriggerEnter(Collider other)
     {

@@ -12,6 +12,11 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
     }
 
+    public void OnZombies()
+    {
+        SceneManager.LoadScene("Swarm", LoadSceneMode.Single);
+    }
+
     public void OnControls()
     {
         if (!_controls)
