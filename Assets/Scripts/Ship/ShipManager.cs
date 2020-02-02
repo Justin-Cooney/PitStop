@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using System;
+using Assets.Scripts.Events;
+using Assets.Scripts.Screens;
 
 public class ShipManager : MonoBehaviour
 {
@@ -15,6 +17,14 @@ public class ShipManager : MonoBehaviour
     private IObservable<ShipCreatedEvent> _createEvents;
     [Inject]
     private IObservable<DamageEnemyEvent> _damageEnemyEvents;
+    [Inject]
+    private IObserver<IncrementDeathCount> _incrementDeathCount;
+    [Inject]
+    private IObserver<LogEvent> _logEvent;
+    [Inject]
+    private IObserver<ShipEnteringDock> _shipEnteringDock;
+    [Inject]
+    private IObserver<ShipExitingDock> _shipExitingDock;
 
     private Dictionary<int, Ship> shipByID = new Dictionary<int, Ship>();
     private int shipInHanger = 0;
@@ -46,7 +56,8 @@ public class ShipManager : MonoBehaviour
 
     private void handleShipDeath(ShipPhaseEvent e)
     {
-        Debug.LogWarning("YO JUSTIN. CAN WE RIG THIS UP TO THE CASUALTY COUNTER AND/OR DISPLAY SCREEN?");
+        _incrementDeathCount.OnNext(new IncrementDeathCount(1));
+        _logEvent.OnNext(new LogEvent($"{NameGenerator.GetName()} has died in combat"));
         shipByID.Remove(e.shipID);
         //if this ship was in the queue, remove it from the queue
         this.hangarQueue.Remove(e.shipID);
@@ -61,6 +72,7 @@ public class ShipManager : MonoBehaviour
             nextPlease();
         }
         Debug.Log("EVENT: SHIP DEPARTING");
+        _shipExitingDock.OnNext(new ShipExitingDock());
     }
 
     private void handleShipEmergency(ShipPhaseEvent e)
@@ -69,6 +81,7 @@ public class ShipManager : MonoBehaviour
         //let the busted-ass ship skip the line
         this.hangarQueue.Remove(e.shipID);
         this.hangarQueue.Insert(0, e.shipID);
+
         //we are going to tell the current ship to GTFO
         if (shipInHanger > 0)
         {
@@ -109,6 +122,7 @@ public class ShipManager : MonoBehaviour
             nextShip.enterHangar();
             shipInHanger = siteID;
         }
+        _shipEnteringDock.OnNext(new ShipEnteringDock());
     }
 
     private void handleShipCreation(ShipCreatedEvent e)

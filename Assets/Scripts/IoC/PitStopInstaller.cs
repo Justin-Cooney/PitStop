@@ -33,6 +33,8 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<NextWave>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<PlayerDead>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<NukeExplodes>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<ShipEnteringDock>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<ShipExitingDock>>().AsSingle();
 		}
 	}
 }

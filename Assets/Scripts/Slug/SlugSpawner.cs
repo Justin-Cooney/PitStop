@@ -12,7 +12,7 @@ public class SlugSpawner : MonoBehaviour
     public GameObject SpawnEffects;
     private float _frequencyMin = 8;
     private float _frequencyMax = 20;
-	public float _timeToSpawn;
+	private float _timeToSpawn = 20;
 
     [Inject]
     private Slug.SlugFactory slugFactory;
