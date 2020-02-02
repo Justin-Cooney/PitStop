@@ -43,6 +43,14 @@ namespace Assets.Scripts.Player
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef20234a-549e-488a-a974-9557b686ff4e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -155,6 +163,28 @@ namespace Assets.Scripts.Player
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e8169ff-bb2e-4770-bb4b-8a1ea5a1b76f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7263eeb-f3ff-4f26-864a-d0b7ce0431bf"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -166,6 +196,7 @@ namespace Assets.Scripts.Player
             m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
             m_PlayerControls_ActionButton = m_PlayerControls.FindAction("ActionButton", throwIfNotFound: true);
             m_PlayerControls_Sprint = m_PlayerControls.FindAction("Sprint", throwIfNotFound: true);
+            m_PlayerControls_UseItem = m_PlayerControls.FindAction("UseItem", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -218,6 +249,7 @@ namespace Assets.Scripts.Player
         private readonly InputAction m_PlayerControls_Move;
         private readonly InputAction m_PlayerControls_ActionButton;
         private readonly InputAction m_PlayerControls_Sprint;
+        private readonly InputAction m_PlayerControls_UseItem;
         public struct PlayerControlsActions
         {
             private @PlayerInput m_Wrapper;
@@ -225,6 +257,7 @@ namespace Assets.Scripts.Player
             public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
             public InputAction @ActionButton => m_Wrapper.m_PlayerControls_ActionButton;
             public InputAction @Sprint => m_Wrapper.m_PlayerControls_Sprint;
+            public InputAction @UseItem => m_Wrapper.m_PlayerControls_UseItem;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -243,6 +276,9 @@ namespace Assets.Scripts.Player
                     @Sprint.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSprint;
                     @Sprint.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSprint;
                     @Sprint.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnSprint;
+                    @UseItem.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnUseItem;
+                    @UseItem.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnUseItem;
+                    @UseItem.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnUseItem;
                 }
                 m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
                 if (instance != null)
@@ -256,6 +292,9 @@ namespace Assets.Scripts.Player
                     @Sprint.started += instance.OnSprint;
                     @Sprint.performed += instance.OnSprint;
                     @Sprint.canceled += instance.OnSprint;
+                    @UseItem.started += instance.OnUseItem;
+                    @UseItem.performed += instance.OnUseItem;
+                    @UseItem.canceled += instance.OnUseItem;
                 }
             }
         }
@@ -265,6 +304,7 @@ namespace Assets.Scripts.Player
             void OnMove(InputAction.CallbackContext context);
             void OnActionButton(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
+            void OnUseItem(InputAction.CallbackContext context);
         }
     }
 }

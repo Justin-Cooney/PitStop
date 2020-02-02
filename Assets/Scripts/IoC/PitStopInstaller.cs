@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Events;
 using Assets.Scripts.Player;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.IoC
@@ -8,6 +9,7 @@ namespace Assets.Scripts.IoC
 	public class PitStopInstaller : MonoInstaller
 	{
 		public PlayerInput input;
+		public GameObject slug;
 
 		public override void InstallBindings()
 		{
@@ -23,6 +25,9 @@ namespace Assets.Scripts.IoC
 			Container.BindInterfacesAndSelfTo<Subject<DoorUpdated>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<OxygenCritical>>().AsSingle();
 			Container.BindInterfacesAndSelfTo<Subject<ShakeCamera>>().AsSingle();
+			Container.BindInterfacesAndSelfTo<Subject<SlugKilled>>().AsSingle();
+			Container.BindFactory<Slug, Slug.SlugFactory>().FromComponentInNewPrefab(slug);
+
 		}
 	}
 }

@@ -19,7 +19,7 @@ public class FlashingLight : MonoBehaviour
     public void Initialize()
     {
         _shakeCamera.Subscribe(e => {
-            _activeTime = 5;
+            _activeTime = 3;
         });
     }
 
@@ -36,13 +36,13 @@ public class FlashingLight : MonoBehaviour
             _increasing = false;
 
         if (_increasing)
-            _light.intensity += 1 * Time.deltaTime;
+            _light.intensity += 2 * Time.deltaTime;
         else
-            _light.intensity -= 1 * Time.deltaTime;
+            _light.intensity -= 2 * Time.deltaTime;
 
         if (_light.intensity <= 0)
             _increasing = true;
-        if (_light.intensity >= 1)
+        if (_light.intensity >= 3)
             _increasing = false;
     }
 }

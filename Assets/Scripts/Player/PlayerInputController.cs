@@ -30,5 +30,10 @@ namespace Assets.Scripts.Player
 		{
 			_playerController.OnSprint(value);
 		}
+
+		public void OnUseItem(InputValue value)
+		{
+			_playerController.OnUseItem(value);
+		}
 	}
 }
