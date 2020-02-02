@@ -1,31 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Part : MonoBehaviour
 {
 
     protected float integrity = 1f;
     public bool onFire = false;
-    Renderer rend;
-    Color startColor;
-    Color damageColor = Color.black;
+    private Fire fire;
 
     public void dealDamage(float rawDamage)
     {
         this.integrity -= rawDamage;
-        Debug.LogWarning("Integrity at " + this.integrity + " on part "+this.name);
+        Debug.LogWarning("Integrity at " + this.integrity + " on part " + this.name);
     }
 
-    void Start()
+    [Inject]
+    public void Initialize()
     {
-        rend = GetComponent<Renderer>();
-        startColor = rend.material.color;
+        //quick and dirty collection of all child parts by type/interface
+        fire = this.GetComponentInChildren<Fire>();
     }
 
     public void Update()
     {
-        rend.material.color = Color.Lerp(damageColor, startColor, this.integrity);
+
     }
 
     public float getIntegrity()
@@ -36,6 +36,10 @@ public class Part : MonoBehaviour
     protected void repairDamage(float rawRepair)
     {
         this.integrity += rawRepair;
+        if (onFire && this.integrity > 0.4)
+        {
+            toggleFire(false);
+        }
     }
 
     public void receiveItem(ObjectType item)
@@ -49,6 +53,15 @@ public class Part : MonoBehaviour
     public void fullRestore()
     {
         this.integrity = 1f;
+    }
+
+    public void toggleFire(bool onFire)
+    {
+        if (fire !=null)
+        {
+            this.onFire = onFire;
+            fire.gameObject.SetActive(onFire);
+        }
     }
 
 }
