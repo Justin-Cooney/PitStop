@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
     private bool _isCreditsShowing = false;
     private bool _isControlsShowing = false;
+    public Button _button;
+    public void Start()
+    {
+        //_button.
+    }
 
     public void OnPlay()
     {
-        SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
+        SceneManager.LoadScene("GamePlayFinal", LoadSceneMode.Single);
     }
 
     public void OnZombies()

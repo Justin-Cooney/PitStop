@@ -10,7 +10,7 @@ public class SlugWaveSpawner : MonoBehaviour
     public GameObject SpawnEffects;
 	public float _timeToSpawn = 0f;
 
-    private float _number = 2;
+    private float _number = 20;
     private float _frequency = 11f;
 
     [Inject]
