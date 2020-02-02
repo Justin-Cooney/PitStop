@@ -31,4 +31,9 @@ public class Part : MonoBehaviour
         }
     }
 
+    public void fullRestore()
+    {
+        this.integrity = 1f;
+    }
+
 }

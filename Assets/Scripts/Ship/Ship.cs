@@ -18,16 +18,24 @@ public class Ship : MonoBehaviour
     public static float EVASION_FUEL_COST = 0.1f;
     public static float AMMO_TIME_RATIO = 1;
     public static float AMMO_DAMAGE_RATTIO = 1;
+
     public static float ENEMY_ATTACK_RATE = 0.5f;
     public static float ENEMY_ACCURACY_THRESHOLD = 0.6f;
     public static float ENEMY_ATTACK_DAMAGE_MIN = 0.05f;
     public static float ENEMY_ATTACK_DAMAGE_MAX = 0.3f;
+
+    public static float TOTAL_INTEGRITY_CRITICAL_THRESHOLD = 0.25f;
+    public static float TOTAL_INTEGRITY_DEATHLY_THRESHOLD = 0.12f;
 
     [Inject]
     private IObserver<ShipCreatedEvent> _creationBus;
 
     [Inject]
     private IObserver<DamageEnemyEvent> _damageBus;
+
+    [Inject]
+    private IObserver<ShipPhaseEvent> _phaseBus;
+
 
     private float currentPhaseLength;
     private float phaseCountdown;
@@ -94,10 +102,11 @@ public class Ship : MonoBehaviour
         }
     }
 
-    private void setPhaseDuration(float phaseTimeInSeconds)
+    private void switchPhase(float phaseTimeInSeconds, ShipPhase newPhase)
     {
         this.currentPhaseLength = phaseTimeInSeconds;
         this.phaseCountdown = phaseTimeInSeconds;
+        this.phase = newPhase;
     }
 
     private void endPhase()
@@ -115,8 +124,6 @@ public class Ship : MonoBehaviour
                 //UNABLE TO MAKE EMERGENCY LANDING. RIP
                 break;
             case ShipPhase.HANGAR:
-                //TODO: trigger animation
-
                 //GET BACK OUT AND FIGHT (enter FIGHT phase)
                 startBattle();
                 break;
@@ -128,29 +135,27 @@ public class Ship : MonoBehaviour
         return UnityEngine.Random.Range(HANGAR_MIN_TIME, HANGAR_MAX_TIME);
     }
 
-    private void enterHangar()
+    public void enterHangar()
     {
+        //determine how much fuel was spend just FLYING AROUND and WAITING        
+        float timeElapsed = currentPhaseLength - phaseCountdown;
+        consumeFuel(this.fuelConsumptionRate * timeElapsed * FUEL_TIME_RATIO);
         enterHangar(this.calculateRepairTime());
     }
 
-    private void enterHangar(float repairTime)
+    public void enterHangar(float repairTime)
     {
-        setPhaseDuration(repairTime);
+        switchPhase(repairTime, ShipPhase.HANGAR);
     }
 
-
-    private void startBattle()
+    public void startBattle()
     {
-        //TODO: remove this shitty and fake code
-        setPhaseDuration(15f);
-        this.randomizeShipCondition();
-    }
-    private void startBattleREAL()
-    {
+        //tell the ship manager that we are leaving
+        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.LEAVING_HANGAR));
         //calculate fuel usage and thus calculate the time spent in battle
         checkFuel();
         float maxBattleTime = totalFuel / this.fuelConsumptionRate / FUEL_TIME_RATIO;
-        setPhaseDuration(UnityEngine.Random.Range(maxBattleTime * 0.25f, maxBattleTime));
+        switchPhase(UnityEngine.Random.Range(maxBattleTime * 0.25f, maxBattleTime), ShipPhase.FIGHT);
     }
 
     private void checkFuel()
@@ -217,13 +222,67 @@ public class Ship : MonoBehaviour
             shipOffensive();
             enemyOffensive();
         }
-        //----->deal damage to enemy
-        //----->take damage 
-        //check for death
-        //determine whether to enter WAIT or EMERGENY LANDING phase
+        //determine whether we are DEAD, okay to WAIT or need to make an EMERGENCY LANDING
+        float averageIntegrity = 0f;
+        if (this.parts.Length > 0)
+        {
+            foreach (Part iPart in this.parts)
+            {
+                averageIntegrity += iPart.getIntegrity();
+            }
+            averageIntegrity /= this.parts.Length;
+        }
 
-        //TODO: remove this shitty and fake code
-        this.enterHangar();
+        //check for death
+        bool fookinDeed = false;
+        if (averageIntegrity <= TOTAL_INTEGRITY_DEATHLY_THRESHOLD)
+        {
+            fookinDeed = true;
+        }
+        if (!fookinDeed)
+        {
+            //check for any vulnerable parts being damaged beyond repair
+            foreach (I_Vulnerable iWeakLink in this.vulnerableParts)
+            {
+                if (iWeakLink.atDeathlyIntegrity())
+                {
+                    fookinDeed = true;
+                    break;
+                }
+            }
+        }
+        if (fookinDeed)
+        {
+            dieTerribleSpaceDeath();
+            return;
+        }
+
+        //check for dire circumstances prompting an EMERGENCY LANDING
+        bool thisIsAnEmergency = false;
+        if (averageIntegrity <= TOTAL_INTEGRITY_CRITICAL_THRESHOLD || this.totalFuel <= 0f)
+        {
+            thisIsAnEmergency = true;
+        }
+        if (!thisIsAnEmergency)
+        {
+            //check for any important parts being hit a little too hard
+            foreach (I_Critical iCritHitShit in this.criticalParts)
+            {
+                if (iCritHitShit.atCriticalIntegrity())
+                {
+                    thisIsAnEmergency = true;
+                    break;
+                }
+            }
+        }
+        if (thisIsAnEmergency)
+        {
+            enterDangerWait();
+            return;
+        }
+
+        //take a number and fly around until we run out of fuel or there is a vacancy in the hangar
+        enterWait();
     }
 
     private void enemyOffensive()
@@ -260,19 +319,22 @@ public class Ship : MonoBehaviour
     private void shipOffensive()
     {
         //loop through weapons
-        for (int i =0; i < this.weapons.Length; i++)
+        for (int i = 0; i < this.weapons.Length; i++)
         {
             Weapon iWeapon = this.weapons[i];
             //check if this is a missile that has been badly damaged
             I_Explosive fireZeMissile = iWeapon as I_Explosive;
             if (fireZeMissile != null && fireZeMissile.atDeathlyIntegrity())
             {
-                //explossion!!!!!!!1!!
+                //explossion!!!!!!!1!! damage all ship parts
                 for (int j = 0; j < this.parts.Length; j++)
                 {
                     this.parts[j].dealDamage(fireZeMissile.damageDoneIfDestroyed());
                 }
-            } else
+                //reset missile hanger integrity to FULL
+                iWeapon.fullRestore();
+            }
+            else
             {
                 //the number of shots taken is limited by time and ammunition
                 float maxAttackTime = iWeapon.getAmmo() / iWeapon.getAmmoUsagePerSecond();
@@ -286,17 +348,33 @@ public class Ship : MonoBehaviour
 
     private void enterWait()
     {
-
+        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.TAKE_A_NUMBER));
+        checkFuel();
+        float maxWaitTime = totalFuel / this.fuelConsumptionRate / FUEL_TIME_RATIO;
+        switchPhase(maxWaitTime, ShipPhase.WAIT);
     }
 
     private void enterDangerWait()
     {
-
+        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.EMERGENCY_LANDING));
+        switchPhase(5f, ShipPhase.DANGER_WAIT);
     }
 
     private void dieTerribleSpaceDeath()
     {
-
+        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.DEATH));
+        //attempt to do clean-up
+        _creationBus = null;
+        _damageBus = null;
+        _phaseBus = null;
+        parts = null;
+        weapons = null;
+        engines = null;
+        criticalParts = null;
+        vulnerableParts = null;
+        explosiveParts = null;
+        //commit sudoku
+        GameObject.Destroy(this);
     }
-}
 
+}
