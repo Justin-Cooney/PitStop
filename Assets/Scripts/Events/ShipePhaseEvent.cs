@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ShipPhaseEvent
 {
-	public ShipPhaseEvent(int shipID, EType eType)
+	public ShipPhaseEvent(Ship ship, EType eType)
 	{
-		this.shipID = shipID;
+		this.ship = ship;
 		this.eType = eType;
 	}
 
-	public int shipID { get; }
+	public Ship ship { get; }
 	public EType eType { get; }
 
 	public enum EType

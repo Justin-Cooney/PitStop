@@ -29,9 +29,6 @@ public class Ship : MonoBehaviour
     public static float TOTAL_INTEGRITY_DEATHLY_THRESHOLD = 0.12f;
 
     [Inject]
-    private IObserver<ShipCreatedEvent> _creationBus;
-
-    [Inject]
     private IObserver<DamageEnemyEvent> _damageBus;
 
     [Inject]
@@ -76,9 +73,10 @@ public class Ship : MonoBehaviour
         tform = this.GetComponent<Transform> ();
 
         //ID stuff
+        this.shipID = Ship.NEXT_SHIP_ID;
+        Ship.NEXT_SHIP_ID++;
 
         Ship.COUNT++;
-        this.shipID = Ship.NEXT_SHIP_ID;
         //put 1st ship in hangar (with very short timer). the rest are already fighting
         if (Ship.COUNT == 1)
         {
@@ -88,16 +86,8 @@ public class Ship : MonoBehaviour
         {
             startBattle();
         }
-        Ship.NEXT_SHIP_ID++;
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //tell manager we exist
-        _creationBus.OnNext(new ShipCreatedEvent(this));
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -182,7 +172,7 @@ public class Ship : MonoBehaviour
         tform.position = new Vector3 (0, 2, -5);
         animator.SetTrigger ("FlyOut");
         //tell the ship manager that we are leaving
-        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.LEAVING_HANGAR));
+        _phaseBus.OnNext(new ShipPhaseEvent(this, ShipPhaseEvent.EType.LEAVING_HANGAR));
         //calculate fuel usage and thus calculate the time spent in battle
         checkFuel();
         float maxBattleTime = totalFuel / this.fuelConsumptionModifier / FUEL_TIME_RATIO;
@@ -371,20 +361,19 @@ public class Ship : MonoBehaviour
         checkFuel();
         float maxWaitTime = totalFuel / this.fuelConsumptionModifier / FUEL_TIME_RATIO;
         switchPhase(maxWaitTime, ShipPhase.WAIT);
-        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.TAKE_A_NUMBER));
+        _phaseBus.OnNext(new ShipPhaseEvent(this, ShipPhaseEvent.EType.TAKE_A_NUMBER));
     }
 
     private void enterDangerWait()
     {
         switchPhase(5f, ShipPhase.DANGER_WAIT);
-        _phaseBus.OnNext (new ShipPhaseEvent (this.shipID, ShipPhaseEvent.EType.EMERGENCY_LANDING));
+        _phaseBus.OnNext (new ShipPhaseEvent (this, ShipPhaseEvent.EType.EMERGENCY_LANDING));
     }
 
     private void dieTerribleSpaceDeath()
     {
-        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.DEATH));
+        _phaseBus.OnNext(new ShipPhaseEvent(this, ShipPhaseEvent.EType.DEATH));
         //attempt to do clean-up
-        _creationBus = null;
         _damageBus = null;
         _phaseBus = null;
         parts = null;

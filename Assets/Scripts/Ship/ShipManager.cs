@@ -14,8 +14,6 @@ public class ShipManager : MonoBehaviour
     [Inject]
     private IObservable<ShipPhaseEvent> _phaseEvents;
     [Inject]
-    private IObservable<ShipCreatedEvent> _createEvents;
-    [Inject]
     private IObservable<DamageEnemyEvent> _damageEnemyEvents;
     [Inject]
     private IObserver<IncrementDeathCount> _incrementDeathCount;
@@ -44,7 +42,6 @@ public class ShipManager : MonoBehaviour
         _phaseEvents.Where(e => e.eType == ShipPhaseEvent.EType.LEAVING_HANGAR).Subscribe(handleShipDeparture);
         _phaseEvents.Where(e => e.eType == ShipPhaseEvent.EType.EMERGENCY_LANDING).Subscribe(handleShipEmergency);
         _phaseEvents.Where(e => e.eType == ShipPhaseEvent.EType.TAKE_A_NUMBER).Subscribe(handleShipDockingRequest); 
-        _createEvents.Subscribe(handleShipCreation);
         _damageEnemyEvents.Subscribe(handleEnemyDamage); 
     }
 
@@ -58,13 +55,16 @@ public class ShipManager : MonoBehaviour
     {
         _incrementDeathCount.OnNext(new IncrementDeathCount(1));
         _logEvent.OnNext(new LogEvent($"{NameGenerator.GetName()} has died in combat"));
-        shipByID.Remove(e.shipID);
+        shipByID.Remove(e.ship.shipID);
         //if this ship was in the queue, remove it from the queue
-        this.hangarQueue.Remove(e.shipID);
+        this.hangarQueue.Remove(e.ship.shipID);
     }
 
     private void handleShipDeparture(ShipPhaseEvent e)
     {
+        //check if ship exists 
+        ensureShipIsRegistered(e.ship);
+
         shipInHanger = 0;
         //check if anybody is in the lineup
         if (this.hangarQueue.Count > 0)
@@ -77,10 +77,12 @@ public class ShipManager : MonoBehaviour
 
     private void handleShipEmergency(ShipPhaseEvent e)
     {
+        //check if ship exists 
+        ensureShipIsRegistered(e.ship);
         Debug.LogWarning("YO JUSTIN: NOT SURE HOW WE WANT THIS TO INTERACT WITH DOORS AND ALARMS AND STUFF. THERE IS POTENTIAL");
         //let the busted-ass ship skip the line
-        this.hangarQueue.Remove(e.shipID);
-        this.hangarQueue.Insert(0, e.shipID);
+        this.hangarQueue.Remove(e.ship.shipID);
+        this.hangarQueue.Insert(0, e.ship.shipID);
 
         //we are going to tell the current ship to GTFO
         if (shipInHanger > 0)
@@ -96,7 +98,7 @@ public class ShipManager : MonoBehaviour
     private void handleShipDockingRequest(ShipPhaseEvent e)
     {
         //add this ship to the waiting list
-        this.hangarQueue.Add(e.shipID);
+        this.hangarQueue.Add(e.ship.shipID);
         //if there is nobody here, just call them in now
         if (this.hangarQueue.Count == 1 && shipInHanger == 0)
         {
@@ -113,22 +115,29 @@ public class ShipManager : MonoBehaviour
         inviteShipIntoHangar(nextShipID);
     }
 
-    private void inviteShipIntoHangar(int siteID)
+    private void inviteShipIntoHangar(int shipID)
     {
-        Debug.Log("INVITE SHIP WITH ID " + siteID);
-        if (this.shipByID.ContainsKey(siteID))
+        Debug.Log("INVITE SHIP WITH ID " + shipID);
+        if (this.shipByID.ContainsKey(shipID))
         {
-            Ship nextShip = this.shipByID[siteID];
+            Debug.Log("FOUND SHIP AND TOLD IT TO COME INSIDE");
+            Ship nextShip = this.shipByID[shipID];
             nextShip.enterHangar();
-            shipInHanger = siteID;
+            shipInHanger = shipID;
+        } else
+        {
+            Debug.Log("COULD NOT FIND SHIP WITH ID "+ shipID+" in shipByID");
         }
         _shipEnteringDock.OnNext(new ShipEnteringDock());
     }
 
-    private void handleShipCreation(ShipCreatedEvent e)
+    private void ensureShipIsRegistered(Ship ship)
     {
-        this.shipByID[e.ship.shipID] = e.ship;
-        Debug.Log("EVENT: SHIP CREATED");
+        if (!this.shipByID.ContainsKey(ship.shipID))
+        {
+            this.shipByID[ship.shipID] = ship;
+            Debug.Log("SHIP ADDED TO MANAGER");
+        }
     }
 
     private void handleEnemyDamage(DamageEnemyEvent e)
