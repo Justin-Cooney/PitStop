@@ -25,4 +25,3 @@ namespace Assets.Scripts.Item.PortalGun
         }
     }
 }
-g
