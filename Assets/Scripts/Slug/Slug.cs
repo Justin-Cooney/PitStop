@@ -10,6 +10,7 @@ public class Slug : MonoBehaviour
     private float timeToChangeDirection;
     private CharacterController _controller;
     private Quaternion _direction;
+    public GameObject DeathEffects;
 
     [Inject]
     private IObserver<SlugKilled> _slugKilled;
@@ -57,13 +58,14 @@ public class Slug : MonoBehaviour
             Destroy(collision.collider.gameObject);
         }
     }
-
+    private bool _isNotified = false;
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("HIT");
-        if (other.GetComponent<Bullet>())
+        if (other.GetComponent<Bullet>() && !_isNotified)
         {
+            _isNotified = true;
             _slugKilled.OnNext(new SlugKilled());
+            GameObject.Instantiate(DeathEffects, transform.position, transform.rotation);
             Destroy(gameObject);
             Destroy(other.gameObject);
         }

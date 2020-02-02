@@ -27,17 +27,21 @@ public class AlienScreen : MonoBehaviour
     public void Initialize()
     {
         _text = GetComponent<TextMesh>();
-        _slugSpawned.Subscribe(e => _slugs++);
-        _slugKilled.Subscribe(e => _slugs--);
+        _slugSpawned.Subscribe(e =>
+        {
+            _slugs += 1;
+            if (_slugs > 1)
+                _text.text = "Warning: Alien presence detected";
+        });
+        _slugKilled.Subscribe(e => {
+            _slugs -= 1;
+            if (_slugs <= 1)
+                _text.text = "";
+        });
     }
 
     public void Update()
     {
-        if (_slugs > 1)
-            _text.text = "Warning: Alien presence detected";
-        else
-            _text.text = "";
-
         if (_countdown <= 0 && _slugs > 1)
         {
             _countdown = 5f;

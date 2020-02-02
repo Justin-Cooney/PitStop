@@ -10,8 +10,8 @@ public class SlugSpawner : MonoBehaviour
 {
 	public GameObject Slug;
     public GameObject SpawnEffects;
-    private float _frequencyMin = 15;
-    private float _frequencyMax = 40;
+    private float _frequencyMin = 10;
+    private float _frequencyMax = 20;
 	public float _timeToSpawn;
 
     [Inject]
@@ -26,14 +26,14 @@ public class SlugSpawner : MonoBehaviour
         _timeToSpawn -= 1 * Time.deltaTime;
         if (_timeToSpawn <= 0)
         {
-            var position = new Vector3(UnityEngine.Random.Range(-20, 20), 0, UnityEngine.Random.Range(-10, 10));
+            _slugSpawned.OnNext(new SlugSpawned());
+            var position = new Vector3(UnityEngine.Random.Range(-15, 15), 0, UnityEngine.Random.Range(-8, 8));
             var slug = slugFactory.Create();
             slug.GetComponent<CharacterController>().enabled = false;
             slug.transform.position = position;
             slug.GetComponent<CharacterController>().enabled = true;
             GameObject.Instantiate(SpawnEffects, position, Quaternion.identity);
             _timeToSpawn = UnityEngine.Random.Range(_frequencyMin, _frequencyMax);
-            _slugSpawned.OnNext(new SlugSpawned());
         }
     }
 }

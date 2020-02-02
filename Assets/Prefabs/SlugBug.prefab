@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96949b032e779e4389d40d8962da98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeathEffects: {fileID: 0}
 --- !u!1 &7360595716781961885
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +331,7 @@ GameObject:
   - component: {fileID: 2530277161030559140}
   - component: {fileID: 2612386971740331279}
   - component: {fileID: 7884838904332345577}
+  - component: {fileID: 4826436331964891113}
   m_Layer: 0
   m_Name: SlugBug
   m_TagString: Untagged
@@ -395,6 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96949b032e779e4389d40d8962da98c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeathEffects: {fileID: 131164, guid: 3c5f4e32698bdb04eaed647f60310510, type: 3}
 --- !u!65 &7884838904332345577
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -408,6 +411,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5, z: 1.5}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &4826436331964891113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7360595716781961885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd66a1f2b07805448896afe69b8d7b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeToLive: 150
 --- !u!1 &9124625306057384308
 GameObject:
   m_ObjectHideFlags: 0

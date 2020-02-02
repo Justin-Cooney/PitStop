@@ -260,8 +260,6 @@ MonoBehaviour:
   Slug: {fileID: 8516817998930650237}
   SpawnEffects: {fileID: 6658713496194389409, guid: ed40a0100bc29304c99e997fb37ce8eb,
     type: 3}
-  _frequencyMin: 20
-  _frequencyMax: 40
   _timeToSpawn: 0
 --- !u!1 &74707025
 GameObject:
@@ -4490,7 +4488,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464182872}
-  m_Text: 'Warning: Alien presence detected'
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
