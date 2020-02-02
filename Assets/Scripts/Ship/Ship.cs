@@ -372,7 +372,7 @@ public class Ship : MonoBehaviour
         vulnerableParts = null;
         explosiveParts = null;
         //commit sudoku
-        GameObject.Destroy(this);
+        Destroy(gameObject);
     }
 
 }
