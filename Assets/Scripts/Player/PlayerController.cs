@@ -169,7 +169,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger");
         if (other.GetComponent<Fire>() != null)
         {
             _stunned = 0.5f;
@@ -219,7 +218,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnUseItem(InputValue value)
     {
-        Debug.Log("uSEiTEM");
         CarriedItem.Apply(i => i.ItemAction(this));
     }
 

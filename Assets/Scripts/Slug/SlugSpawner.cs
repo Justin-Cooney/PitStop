@@ -10,7 +10,7 @@ public class SlugSpawner : MonoBehaviour
 {
 	public GameObject Slug;
     public GameObject SpawnEffects;
-    private float _frequencyMin = 10;
+    private float _frequencyMin = 8;
     private float _frequencyMax = 20;
 	public float _timeToSpawn;
 
@@ -22,7 +22,6 @@ public class SlugSpawner : MonoBehaviour
 
     public void Update()
 	{
-        Debug.Log(_timeToSpawn);
         _timeToSpawn -= 1 * Time.deltaTime;
         if (_timeToSpawn <= 0)
         {

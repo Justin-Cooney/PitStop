@@ -42,7 +42,7 @@ namespace Assets.Scripts.Player
                     ""id"": ""f6e1002a-236c-4aa1-8bbf-f5d10da040df"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""UseItem"",
@@ -50,7 +50,7 @@ namespace Assets.Scripts.Player
                     ""id"": ""ef20234a-549e-488a-a974-9557b686ff4e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -145,7 +145,7 @@ namespace Assets.Scripts.Player
                 {
                     ""name"": """",
                     ""id"": ""7926a510-e57f-4d54-8cc5-b4b3ec035bcf"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -167,7 +167,7 @@ namespace Assets.Scripts.Player
                 {
                     ""name"": """",
                     ""id"": ""7e8169ff-bb2e-4770-bb4b-8a1ea5a1b76f"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

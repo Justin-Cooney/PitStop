@@ -6,8 +6,8 @@ using Zenject;
 public class FireManager : MonoBehaviour
 {
     public GameObject Fire;
-    public float _frequencyMin = 20;
-    public float _frequencyMax = 40;
+    public float _frequencyMin = 15;
+    public float _frequencyMax = 30;
     public float _timeToFire;
 
     [Inject]
