@@ -117,6 +117,9 @@ public class PlayerController : MonoBehaviour
                 Respawn();
             }
         }
+        if (transform.localPosition.y < -13f) {
+            transform.localPosition = new Vector3 (transform.localPosition.x, -13f, transform.localPosition.z);
+        }
     }
 
     private void Respawn()
