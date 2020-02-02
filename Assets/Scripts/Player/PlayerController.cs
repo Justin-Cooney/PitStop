@@ -5,6 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
+using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Inject]
     private IObserver<AddPoints> _events;
+
     private CharacterController _characterController;
     private float _speed = 15;
     private float _rotationSpeed = 25;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private float _sprintCooldown = 0;
     private float _sprintDuration = 0.7f;
     private bool _sprinting = false;
+    private float _stunned = 0;
 
     [Inject]
     public void Initialize()
@@ -33,11 +36,24 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        _characterController.Move(GetVelocity());
-        transform.rotation = GetRotation();
+        if (_stunned <= 0)
+        {
+            _characterController.Move(GetVelocity());
+            transform.rotation = GetRotation();
+        }
+        else
+        {
+            _characterController.Move(transform.forward * -30 * Time.deltaTime);
+            if (_stunned <= 0.42f)
+            {
+                transform.Rotate(Vector3.up, 5000 * Time.deltaTime);
+            }
+        }
         _sprintCooldown -= 1 * Time.deltaTime;
         if (_sprintCooldown <= 0.5f)
             _sprinting = false;
+        if (_stunned > 0)
+            _stunned -= 1 * Time.deltaTime;
     }
 
     private Vector3 GetVelocity()
@@ -101,7 +117,6 @@ public class PlayerController : MonoBehaviour
 
     public void HandleActionButtonClick()
     {
-
         CheckIfRayCastHit();
         DropOrPickupItem();
     }
@@ -117,13 +132,25 @@ public class PlayerController : MonoBehaviour
                     CarriedItem = Option.Some(objectToPickUp);
                     objectToPickUp.PickUpItem(this);
                 }
+                else if(o.GetComponent<IDoorPanel>() is IDoorPanel doorPanel)
+                {
+                    doorPanel.ToggleDoor();
+                }
             }));
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        var gameObject = other.gameObject;
-        ReachableGameObject = Option.Some(gameObject);
+        if (other.GetComponent<Fire>() != null)
+        {
+            _stunned = 0.5f;
+            DropOrPickupItem();
+        }
+        else
+        {
+            var gameObject = other.gameObject;
+            ReachableGameObject = Option.Some(gameObject);
+        }
     }
 
     private void OnTriggerExit(Collider other)

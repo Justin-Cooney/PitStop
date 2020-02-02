@@ -3,7 +3,7 @@ using Functional;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Item
+namespace Assets.Scripts.Items
 {
     class ItemToPickUp : MonoBehaviour, ICanBePickedUp
     {
@@ -36,12 +36,13 @@ namespace Assets.Scripts.Item
             _carryingPlayer.Do(
                 p =>
                 {
-                    transform.position = p.transform.position;
+                    transform.position = p.transform.position + (p.transform.forward * 1.1f);
+                    transform.rotation = p.transform.rotation;
                 },
                 () =>
                 {
                 }
-            );;
+            );
         }
 
         public void OnPlaceableAreaEnter(Part part) {
@@ -52,9 +53,15 @@ namespace Assets.Scripts.Item
             this.part = null;
         }
 
-        public void UseItem () {
-            //this.part.PassItem(this.objectType);
+        public void UseItem ()
+        {
+            //remove item from player
+            DropItem();
+            //give item to the ship part
+            this.part.receiveItem(this.objectType);
             this.part = null;
+            //destroy self
+            GameObject.Destroy(this);
         }
 
     }
