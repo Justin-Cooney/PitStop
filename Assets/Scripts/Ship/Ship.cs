@@ -373,8 +373,8 @@ public class Ship : MonoBehaviour
 
     private void enterDangerWait()
     {
-        _phaseBus.OnNext(new ShipPhaseEvent(this.shipID, ShipPhaseEvent.EType.EMERGENCY_LANDING));
         switchPhase(5f, ShipPhase.DANGER_WAIT);
+        _phaseBus.OnNext (new ShipPhaseEvent (this.shipID, ShipPhaseEvent.EType.EMERGENCY_LANDING));
     }
 
     private void dieTerribleSpaceDeath()
