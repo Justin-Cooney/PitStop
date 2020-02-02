@@ -1,12 +1,17 @@
-﻿using System;
+﻿using Assets.Scripts.Events;
+using System;
 using UnityEngine;
+using Zenject;
 
 public class FireManager : MonoBehaviour
 {
     public GameObject Fire;
-    public float _frequencyMin = 5;
-    public float _frequencyMax = 30;
+    public float _frequencyMin = 20;
+    public float _frequencyMax = 40;
     public float _timeToFire;
+
+    [Inject]
+    private IObserver<ShakeCamera> _shakeCamera;
 
     void Start()
     {
@@ -20,7 +25,12 @@ public class FireManager : MonoBehaviour
         if (_timeToFire <= 0)
         {
             GameObject.Instantiate(Fire, new Vector3(UnityEngine.Random.Range(-20, 20), 0, UnityEngine.Random.Range(-10, 10)), Quaternion.identity);
+            GameObject.Instantiate(Fire, new Vector3(UnityEngine.Random.Range(-20, 20), 0, UnityEngine.Random.Range(-10, 10)), Quaternion.identity);
+            GameObject.Instantiate(Fire, new Vector3(UnityEngine.Random.Range(-20, 20), 0, UnityEngine.Random.Range(-10, 10)), Quaternion.identity);
+            GameObject.Instantiate(Fire, new Vector3(UnityEngine.Random.Range(-20, 20), 0, UnityEngine.Random.Range(-10, 10)), Quaternion.identity);
             _timeToFire = UnityEngine.Random.Range(_frequencyMin, _frequencyMax);
+            _shakeCamera.OnNext(new ShakeCamera());
+            Debug.Log("start shake");
         }
     }
 }

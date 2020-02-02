@@ -25,6 +25,6 @@ public class ScoreScreen : MonoBehaviour
 	private void OnAddPoints(AddPoints e)
 	{
 		_points += e.Points;
-		_text.text = $"Workplace Efficiency\nRating: { _points}";
+		_text.text = $"Workplace Efficiency Rating: { _points}";
 	}
 }

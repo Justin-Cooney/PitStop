@@ -13,8 +13,19 @@ public class PlayerController : MonoBehaviour
     private Option<ICanBePickedUp> CarriedItem;
     public Option<GameObject> ReachableGameObject { get; private set; }
 
+    public GameObject _deathEffects;
+    public GameObject _spawnEffects;
+
+    public Transform _respawnTransform;
+
     [Inject]
     private IObserver<AddPoints> _events;
+
+    [Inject]
+    private IObserver<IncrementDeathCount> _incrementDeathCount;
+
+    [Inject]
+    private IObserver<LogEvent> _logEvent;
 
     private CharacterController _characterController;
     private float _speed = 15;
@@ -28,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private bool _sprinting = false;
     private float _stunned = 0;
 
+    private bool _isDead = false;
+
     [Inject]
     public void Initialize()
     {
@@ -36,17 +49,22 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        if (_stunned <= 0)
+        if (_stunned <= 0 && !_isDead)
         {
             _characterController.Move(GetVelocity());
             transform.rotation = GetRotation();
         }
         else
         {
-            _characterController.Move(transform.forward * -30 * Time.deltaTime);
+            //_characterController.Move(transform.forward * -30 * Time.deltaTime);
             if (_stunned <= 0.42f)
             {
                 transform.Rotate(Vector3.up, 5000 * Time.deltaTime);
+                if(!_isDead)
+                {
+                    _isDead = true;
+                    PlayerDie();
+                }
             }
         }
         _sprintCooldown -= 1 * Time.deltaTime;
@@ -54,6 +72,15 @@ public class PlayerController : MonoBehaviour
             _sprinting = false;
         if (_stunned > 0)
             _stunned -= 1 * Time.deltaTime;
+
+        if (_isDead && _stunned <= 0)
+        {
+            _characterController.enabled = false;
+            transform.position = _respawnTransform.position;
+            _characterController.enabled = true;
+            GameObject.Instantiate(_spawnEffects, transform);
+            _isDead = false;
+        }
     }
 
     private Vector3 GetVelocity()
@@ -141,6 +168,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Trigger");
         if (other.GetComponent<Fire>() != null)
         {
             _stunned = 0.5f;
@@ -175,5 +203,13 @@ public class PlayerController : MonoBehaviour
             _sprinting = true;
             _sprintCooldown = _sprintDuration;
         }
+    }
+
+    public void PlayerDie()
+    {
+        _isDead = true;
+        GameObject.Instantiate(_deathEffects, transform);
+        _incrementDeathCount.OnNext(new IncrementDeathCount(1));
+        _logEvent.OnNext(new LogEvent($"Engineer X-{UnityEngine.Random.Range(1000000, 99999999)} has malfunctioned."));
     }
 }
