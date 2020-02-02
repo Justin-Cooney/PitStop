@@ -12,9 +12,10 @@ public abstract class Weapon : Part
             addAmmo(item.value);
         }
     }
-    public void useAmmo(float ammoUsage)
+    public float useAmmoAndCalculateDamage(float ammoUsage)
     {
         this.ammo -= ammoUsage;
+        return this.calculateDamage(ammoUsage);
     }
 
     public float getAmmo()
@@ -27,7 +28,7 @@ public abstract class Weapon : Part
         this.ammo += ammoAdded;
     }
     
-    protected abstract float getAmmoUsagePerSecond();
-    protected abstract float getDamagePerAmmo();
+    public abstract float getAmmoUsagePerSecond();
+    protected abstract float calculateDamage(float ammoUsage);
 
 }
