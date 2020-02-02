@@ -12,8 +12,8 @@ public class Ship : MonoBehaviour
 {
 
     //CONSTANTS
-    private static float HANGAR_MIN_TIME = 5f;
-    private static float HANGAR_MAX_TIME = 20f;
+    private static float HANGAR_MIN_TIME = 10f;
+    private static float HANGAR_MAX_TIME = 25f;
     public static float FUEL_TIME_RATIO = 0.04f;
     public static float EVASION_FUEL_COST = 0.1f;
     public static float AMMO_TIME_RATIO = 1;
