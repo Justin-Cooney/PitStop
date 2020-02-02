@@ -9,10 +9,6 @@ public class MainMenuController : MonoBehaviour
     private bool _isCreditsShowing = false;
     private bool _isControlsShowing = false;
     public Button _button;
-    public void Start()
-    {
-        //_button.
-    }
 
     void Start()
     {
@@ -20,6 +16,7 @@ public class MainMenuController : MonoBehaviour
         firstButton.Select();
         firstButton.OnSelect(null);
     }
+
     public void OnPlay()
     {
         SceneManager.LoadScene("GamePlayFinal", LoadSceneMode.Single);
