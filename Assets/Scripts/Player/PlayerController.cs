@@ -66,9 +66,12 @@ public class PlayerController : MonoBehaviour
 
     public void Awake()
     {
-        foreach (var child in GetComponentsInChildren<Renderer>())
+        if (!_waveMode)
         {
-            child.enabled = false;
+            foreach (var child in GetComponentsInChildren<Renderer>())
+            {
+                child.enabled = false;
+            }
         }
     }
 
