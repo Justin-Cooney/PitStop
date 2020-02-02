@@ -14,6 +14,7 @@ namespace Assets.Scripts.Player
 			_playerNumber = _nextPlayerId;
 			_nextPlayerId++;
 			_playerController = GameObject.Find($"Player{_playerNumber}").GetComponent<PlayerController>();
+			_playerController.InitAndSpawn();
 		}
 		
 		public void OnActionButton(InputValue value)

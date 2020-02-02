@@ -52,7 +52,7 @@ public class WaveScreen : MonoBehaviour
 			_waveNumber++;
 			_nextWave.OnNext(new NextWave(_waveNumber));
 			_text.text = $"Wave {_waveNumber}";
-			_timeLeftInWave = 8f;
+			_timeLeftInWave = 30f;
 			_deaths = 0;
 
 			if(_waveNumber == 0)
@@ -77,6 +77,6 @@ public class WaveScreen : MonoBehaviour
 
 	private void EndGame()
 	{
-		//_gameOver = true;
+		_gameOver = true;
 	}
 }

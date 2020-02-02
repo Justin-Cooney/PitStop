@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
     public float _invincibility = 0f;
 
+    public bool _initialized = false;
+
     [Inject]
     public void Initialize()
     {
@@ -60,6 +62,25 @@ public class PlayerController : MonoBehaviour
             if(_isDead)
                 Respawn();
             });
+    }
+
+    public void Awake()
+    {
+        foreach (var child in GetComponentsInChildren<Renderer>())
+        {
+            child.enabled = false;
+        }
+    }
+
+    public void InitAndSpawn()
+    {
+        foreach(var child in GetComponentsInChildren<Renderer>())
+        {
+            child.enabled = true;
+        }
+        GameObject.Instantiate(_spawnEffects, transform);
+        _invincibility = 2f;
+        _initialized = true;
     }
 
     public void Update()
@@ -136,7 +157,7 @@ public class PlayerController : MonoBehaviour
         {
             _velocity = Vector2.zero;
         }
-        _events.OnNext(new AddPoints(1));
+        //_events.OnNext(new AddPoints(1));
     }
 
     private readonly Quaternion _thirtyFiveDegreesLeft = Quaternion.Euler(0, -35, 0);
@@ -193,6 +214,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!_initialized)
+            return;
+
         if (other.GetComponent<Fire>() != null && _invincibility <= 0 && !_isDead)
         {
             if (_waveMode && other.GetComponent<Fire>().IsCooled())
@@ -214,11 +238,18 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.GetComponent<Bullet>() != null && _invincibility <= 0 && !_isDead)
         {
-            _stunned = 0.5f;
-            DropOrPickupItem();
-            GameObject.Destroy(other.gameObject);
-            _playerDead.OnNext(new PlayerDead());
-            _isDead = true;
+            if (_waveMode)
+            {
+                _characterController.transform.Rotate(transform.up * 120 * (UnityEngine.Random.Range(0, 1) ==  0 ? -1 : 1));
+            }
+            else
+            {
+                _stunned = 0.5f;
+                DropOrPickupItem();
+                GameObject.Destroy(other.gameObject);
+                _playerDead.OnNext(new PlayerDead());
+                _isDead = true;
+            }
         }
         else
         {
