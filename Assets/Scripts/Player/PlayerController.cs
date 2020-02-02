@@ -66,9 +66,12 @@ public class PlayerController : MonoBehaviour
 
     public void Awake()
     {
-        foreach (var child in GetComponentsInChildren<Renderer>())
+        if (!_waveMode)
         {
-            child.enabled = false;
+            foreach (var child in GetComponentsInChildren<Renderer>())
+            {
+                child.enabled = false;
+            }
         }
     }
 
@@ -81,6 +84,14 @@ public class PlayerController : MonoBehaviour
         GameObject.Instantiate(_spawnEffects, transform);
         _invincibility = 2f;
         _initialized = true;
+    }
+
+    private void LateUpdate () {
+        if (transform.position.y > 1f) {
+            _characterController.enabled = false;
+            transform.position = new Vector3 (transform.position.x, 1f, transform.position.z);
+            _characterController.enabled = true;
+        }
     }
 
     public void Update()
@@ -116,9 +127,6 @@ public class PlayerController : MonoBehaviour
             {
                 Respawn();
             }
-        }
-        if (transform.localPosition.y < -13f) {
-            transform.localPosition = new Vector3 (transform.localPosition.x, -13f, transform.localPosition.z);
         }
     }
 
@@ -273,6 +281,7 @@ public class PlayerController : MonoBehaviour
         } else {
             itemToDrop.DropItem();
         }
+        _velocity = Vector2.zero;
         CarriedItem = Option.None<ICanBePickedUp>();
     }
 
